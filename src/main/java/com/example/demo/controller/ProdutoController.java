@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.infra.FileSever;
 import com.example.demo.model.Produto;
 import com.example.demo.respository.ProdutoCustomRepository;
 import com.example.demo.respository.ProdutoRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoCustomRepository produtoCustomRepository;
+
+    @Autowired
+    private FileSever fileSever;
 
     @GetMapping(value = "/listar")
     public ModelAndView listar(Produto produto, Model model) {
@@ -46,10 +51,24 @@ public class ProdutoController {
     }
 
     @PostMapping("/create")
-    public String create(Produto produto) {
+    public String create(MultipartFile sumario1, MultipartFile sumario2,MultipartFile sumario3, Produto produto) {
+        String path1 = fileSever.write("arquivos-sumario", sumario1);
+        String path2 = fileSever.write("arquivos-sumario", sumario2);
+        String path3 = fileSever.write("arquivos-sumario", sumario3);
+        produto.setImg1(path1);
+        produto.setImg2(path2);
+        produto.setImg3(path3);
         produtoRepository.save(produto);
-        return "redirect:/produtos/listar";
+        return "redirect:/produtos/confirmar/"+produto.getId();
     }
+
+    @GetMapping("/confirmar/{id}")
+    public ModelAndView ConfirmaInclusão(@PathVariable("id") Integer id, Produto produto){
+        ModelAndView mv = new ModelAndView("/administrador/ok");
+        mv.addObject("prod", produtoRepository.getOne(id));
+        return mv;
+    }
+
 
     @GetMapping("/edit/{id}")
     public ModelAndView BuscaEdit(@PathVariable Integer id) {
@@ -113,7 +132,6 @@ public class ProdutoController {
     @GetMapping("/categoria")
     public ModelAndView buscaPorCategoria(String categoria, Produto produto){
         ModelAndView mv = new ModelAndView("/produtos/lista");
-        System.out.println(categoria);
         List<Produto> prodCategoria = produtoCustomRepository.getProdutoPorCategoria(categoria);
         mv.addObject("lista", prodCategoria);
         return mv;

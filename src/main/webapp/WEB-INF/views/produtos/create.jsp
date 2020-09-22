@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 
@@ -180,26 +180,24 @@
                 </br></br>
                 <div style="background-color: white;" class="container">
                     </br></br>
-                    <form action="/produtos/create" method="POST">
+                    <form action="/produtos/create" method="POST"
+                          enctype="multipart/form-data">
                         <div class="alert alert-success" role="alert">
                             <h4 class="alert-heading">CADASTRO DE PRODUTO</h4>
                             <p>TODOS OS CAMPOS SÃO OBRIGATÓRIO PARA INCLUIR UM PRODUTO</p>
                         </div>
                         <div>
                             <div class="form-group">
-                                <label for="exampleFormControlFile1">Imagem 1</label>
-                                <input type="url" placeholder="https://imagem1" class="form-control-file" required
-                                    name="img1" id="exampleFormControlFile1">
+                                <label>Imagem 1</label>
+                                <input type="file" class="form-control-file" name="sumario1">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlFile1">Imagem 2</label>
-                                <input type="url" placeholder="https://imagem2" required class="form-control-file"
-                                    name="img2" id="exampleFormControlFile1">
+                                <label>Imagem 2</label>
+                                <input type="file" class="form-control-file" name="sumario2">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlFile1">Imagem 3</label>
-                                <input type="url" placeholder="https://imagem3" required class="form-control-file"
-                                    name="img3" id="exampleFormControlFile1">
+                                <label>Imagem 3</label>
+                                <input type="file"  class="form-control-file" name="sumario3">
                             </div>
                         </div>
                         <div class="form-group">

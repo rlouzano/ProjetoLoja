@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ public class Produto {
     @Id //Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto_increment
     private Integer id;
+    private Integer codigo;
     private String sexo;
     private String nome;
     private int quantidade;

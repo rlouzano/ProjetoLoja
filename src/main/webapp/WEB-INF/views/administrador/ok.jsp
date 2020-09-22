@@ -1,15 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Carrinho de Compras</title>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/style.css"/>
+    <title>Insert title here</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 </head>
+
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
@@ -145,8 +146,7 @@
                             <div>
                                 <form action="/produtos/categoria" method="GET">
                                     <input type="hidden" name="categoria" value="Vestido"/>
-                                    <button type="submit" style="width: 97px"
-                                            class="btn btn-secondary">Vestidos
+                                    <button type="submit" style="width: 97px" class="btn btn-secondary">Vestidos
                                     </button>
                                 </form>
                             </div>
@@ -182,66 +182,106 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;">
-            </br></br></br>
+            </br></br>
+            <div class="container">
+                </br>
+                <div class="card">
+                    <div>
+                        <form action="/produtos/confirmar" method="get">
+                            <div>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <img src="/${prod.img1}" class="card-img-top" alt="...">
+                                        </div>
+                                        <div class="" class="list-group-item">
+                                            <img style="width: 90px; margin-left: 25px;" src="/${prod.img2}"
+                                                 class="card-img-top" alt="...">
+                                            <img style="width: 90px; margin-left: 54px;" src="/${prod.img3}"
+                                                 class="card-img-top" alt="..."/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="width: 683px; margin-left: 366px; margin-top: -352px;">
+                                        <div class="form-group">
+                                            <label for="nome">Nome</label>
+                                            <p class="form-control" name="nome" id="nome">${prod.nome}</p>
+                                        </div>
+                                        <div class="form-group" style="">
+                                            <label for="modelo">Modelo</label>
+                                            <p class="form-control" id="modelo" name="modelo">${prod.modelo}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descricao">Descrição</label>
+                                            <textarea class="form-control" id="descricao"
+                                                      name="descricao">${prod.descricao}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descricao">Código</label>
+                                            <p class="form-control" id="descricao" name="codigo"></p>
+                                        </div>
+                                    </div>
 
-            <section class="container middle" style="background-color: white">
-                <h2 id="cart-title">Seu carrinho de compras</h2>
-                <table id="cart-table">
-                    <colgroup>
-                        <col class="item-col" />
-                        <col class="item-price-col" />
-                        <col class="item-quantity-col" />
-                        <col class="line-price-col" />
-                        <col class="delete-col" />
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th class="cart-img-col"></th>
-                        <th width="65%">Item</th>
-                        <th width="10%">Preço</th>
-                        <th width="10%">Quantidade</th>
-                        <th width="10%">Total</th>
-                        <th width="5%"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${carrinhoCompras.itens }" var="item">
-                        <tr>
-                            <td class="cart-img-col"><img
-                                    src="..."
-                                    width="71px" height="100px" />
-                            </td>
-                            <td class="item-title">${item.produto.titulo }</td>
-                            <td class="numeric-cell">${item.preco }</td>
-                            <td class="quantity-input-cell">
-                                <input type="number" min="0" id="quantidade" name="quantidade"
-                                       value="${carrinhoCompras.getQuantidade(item) }" />
-                            </td>
-                            <td class="numeric-cell">${carrinhoCompras.getTotal(item) }</td>
-                            <td class="remove-item">
-                                <form action="" method="POST">
-                                    <input type="image" src="../../../resources/img/excluir.png" alt="Excluir"
-                                           title="Excluir" />
-                                </form>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="3"><input type="submit" class="checkout" name="checkout" value="Finalizar compra" />
-                        </td>
-                        <td class="numeric-cell">${carrinhoCompras.total }</td>
-                        <td></td>
-                    </tr>
-                    </tfoot>
-                </table>
-            <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648" style="display: block; height: 692px; width: 1639px;"></canvas>
-            </section>
+
+                                    <div style="width: 1041px; margin-left: 10px; margin-top: 52px;">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3">
+                                                <label for="genero">Genero</label>
+                                                <p class="form-control" name="genero" id="genero">${prod.sexo}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="altura">Altura</label>
+                                                <p name="altura" class="form-control" id="altura">${prod.altura}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="busto">Busto</label>
+                                                <p name="busto" class="form-control" id="busto">${prod.busto}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="cintura">Cintura</label>
+                                                <p name="cintura" class="form-control" id="cintura">${prod.cintura}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="quadril">Quadril</label>
+                                                <p name="quadril" class="form-control" id="quadril">${prod.quadril}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="tamanho">Tamanho</label>
+                                                <p name="tamanho" class="form-control" id="tamanho">${prod.tamanho}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="categoria">Categoria</label>
+                                                <p name="categoria" class="form-control"
+                                                   id="categoria">${prod.categoria}</p>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <button type="button" style="margin-left: 45px; margin-top: 28px;"
+                                                        class="btn btn-primary btn-sm"><a style="width: 70px;"
+                                                                                          class="btn btn-primary"
+                                                                                          href="/produtos/listar">Editar</a>
+                                                </button>
+                                                <button type="button" style=" margin-top: 28px;"
+                                                        class="btn btn-secondary btn-sm"><a style="width: 70px;"
+                                                                                            class="btn btn-secondary"
+                                                                                            href="/produtos/listar">Menu</a>
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
+                    style="display: block; height: 692px; width: 1639px;"></canvas>
         </main>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
 <script src="/docs/4.5/dist/js/bootstrap.bundle.min.js"
@@ -260,4 +300,5 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

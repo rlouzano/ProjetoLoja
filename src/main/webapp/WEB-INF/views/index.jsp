@@ -183,7 +183,7 @@
             <div>
                 <div class="rounded float-left" style="width: 255px; text-align: center;">
                     <div>
-                        <img src="${produto.img1}" class="ui-item__image" width="224" height="224">
+                        <img src="/${produto.img1}" class="ui-item__image" width="224" height="224">
                     </div>
                     <div style="text-align: center;">
                         <a href="/produtos/edit/${produto.id}">${produto.nome}</a>

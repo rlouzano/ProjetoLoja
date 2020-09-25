@@ -14,10 +14,14 @@ public class ProdutoCustomRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Produto> getProduto(String nomeProduto){
-        String jpql = "select p from Produto p where p.nome like :pNome";
+    public List<Produto> getProdutoAtivo(){
+        String jpql = "select p from Produto p where p.active = true";
         TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
-        query.setParameter("pNome", nomeProduto);
+        return query.getResultList();
+    }
+    public List<Produto> getProdutoInativo(){
+        String jpql = "select p from Produto p where p.active = false";
+        TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
         return query.getResultList();
     }
 

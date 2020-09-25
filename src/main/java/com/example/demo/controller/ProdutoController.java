@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.infra.FileSever;
 import com.example.demo.model.Produto;
 import com.example.demo.respository.ProdutoCustomRepository;
-import com.example.demo.respository.ProdutoRepository;
+import com.example.demo.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,142 +12,136 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProdutoCustomRepository produtoCustomRepository;
 
     @Autowired
-    private ProdutoCustomRepository produtoCustomRepository;
+    private ProdutoService produtoService;
 
     @Autowired
     private FileSever fileSever;
 
+    public ProdutoController(ProdutoCustomRepository produtoCustomRepository, ProdutoService produtoService, FileSever fileSever) {
+        this.produtoCustomRepository = produtoCustomRepository;
+        this.produtoService = produtoService;
+        this.fileSever = fileSever;
+    }
+
     @GetMapping(value = "/listar")
-    public ModelAndView listar(Produto produto, Model model) {
-        List<Produto> produtos = produtoRepository.findAll();
-        ModelAndView mv = new ModelAndView("index");
+    public ModelAndView listaAtivo(Produto produto, Model model) {
+        List<Produto> produtos = produtoCustomRepository.getProdutoAtivo();
+        ModelAndView mv = new ModelAndView("adm/listar");
+        mv.addObject("produtos", produtos);
+        return mv;
+    }
+    @GetMapping(value = "/produtos")
+    public ModelAndView listaProdutos(Produto produto, Model model) {
+        List<Produto> produtos = produtoCustomRepository.getProdutoAtivo();
+        ModelAndView mv = new ModelAndView("produtos/index");
         mv.addObject("produtos", produtos);
         return mv;
     }
 
+
+    @GetMapping(value = "/inativo")
+    public ModelAndView listaInativo(Produto produto, Model model) {
+        List<Produto> produtos = produtoCustomRepository.getProdutoInativo();
+        ModelAndView mv = new ModelAndView("adm/inativo");
+        mv.addObject("produtos", produtos);
+        return mv;
+    }
+
+    @GetMapping(value = "/detalhes/{id}")
+    public String produtoDetalhes(@PathVariable("id") Integer id, @ModelAttribute("prod") Produto produto, Model model) {
+        model.addAttribute("prod", produtoService.listaPorUm(id));
+        return "produtos/detalhes";
+    }
+
     @GetMapping("/estoque")
     public ModelAndView listarEstoque(Produto produto, String nomeproduto) {
-        ModelAndView mv = new ModelAndView("produtos/estoque");
-        List<Produto> produtos = produtoCustomRepository.getProduto(nomeproduto+"%");
+        ModelAndView mv = new ModelAndView("estoque/estoque");
+        List<Produto> produtos = produtoService.listarTodos();
         mv.addObject("produtos", produtos);
         return mv;
     }
 
 
     @GetMapping("/create")
-    public ModelAndView BuscaCadastro(Produto produto) {
-        ModelAndView mv = new ModelAndView("produtos/create");
-        return mv;
+    public String buscaCadastro(Produto produto) {
+        return "produtos/create";
     }
 
     @PostMapping("/create")
-    public String create(MultipartFile sumario1, MultipartFile sumario2,MultipartFile sumario3, Produto produto) {
-        String path1 = fileSever.write("arquivos-sumario", sumario1);
-        String path2 = fileSever.write("arquivos-sumario", sumario2);
-        String path3 = fileSever.write("arquivos-sumario", sumario3);
+    public String create(MultipartFile sumario1, MultipartFile sumario2, MultipartFile sumario3, Produto produto) {
+        String path1 = fileSever.write("/img", sumario1);
+        String path2 = fileSever.write("/img", sumario2);
+        String path3 = fileSever.write("/img", sumario3);
         produto.setImg1(path1);
         produto.setImg2(path2);
         produto.setImg3(path3);
-        produtoRepository.save(produto);
-        return "redirect:/produtos/confirmar/"+produto.getId();
+        produtoService.adicionar(produto);
+        return "redirect:/produtos/confirmar/" + produto.getId();
     }
 
     @GetMapping("/confirmar/{id}")
-    public ModelAndView ConfirmaInclusão(@PathVariable("id") Integer id, Produto produto){
-        ModelAndView mv = new ModelAndView("/administrador/ok");
-        mv.addObject("prod", produtoRepository.getOne(id));
+    public ModelAndView confirmaInclusão(@PathVariable("id") Integer id, Produto produto) {
+        ModelAndView mv = new ModelAndView("adm/ok");
+        mv.addObject("prod", produtoService.listaPorUm(id));
         return mv;
     }
 
 
     @GetMapping("/edit/{id}")
-    public ModelAndView BuscaEdit(@PathVariable Integer id) {
+    public ModelAndView buscarEdit(@PathVariable Integer id) {
         ModelAndView mv = new ModelAndView("produtos/edit");
-        mv.addObject("prod", produtoRepository.getOne(id));
+        Produto prod = produtoService.listaPorUm(id);
+        mv.addObject("prod", prod);
         return mv;
     }
 
-    @PutMapping(value = "/edit/{id}")
-    public String edit(@PathVariable Integer id, Produto produto) {
-        Produto prod = produtoRepository.getOne(id);
-        if (prod != null) {
-            prod.setId(prod.getId());
-            prod.setQuantidade(produto.getQuantidade());
-            prod.setValor(prod.getValor());
-            prod.setImg1(prod.getImg1());
-            prod.setImg2(prod.getImg2());
-            prod.setImg3(prod.getImg3());//100% algodão
-            prod.setModelo(prod.getModelo());
-            prod.setDescricao(prod.getDescricao());
-            prod.setAltura(prod.getAltura());
-            prod.setBusto(prod.getBusto());
-            prod.setCintura(prod.getCintura());
-            prod.setQuadril(prod.getQuadril());
-            prod.setTamanho(prod.getTamanho());
-            prod.setCategoria(prod.getCategoria());
-            produtoRepository.save(prod);
-        }
-        return "redirect:/produtos/listar";
+    @PutMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, @ModelAttribute Produto produto) {
+            produtoService.update(id, produto);
+            return "redirect:/produtos/listar";
+
     }
 
     @PutMapping("/alterar/{id}")
-    public String alterar(@PathVariable("id") Integer id, Produto produto){
-        Produto prod = produtoRepository.getOne(id);
-        if (prod != null) {
-            prod.setId(prod.getId());
-            prod.setQuantidade(produto.getQuantidade());
-            prod.setValor(prod.getValor());
-            prod.setImg1(prod.getImg1());
-            prod.setImg2(prod.getImg2());
-            prod.setImg3(prod.getImg3());//100% algodão
-            prod.setModelo(prod.getModelo());
-            prod.setDescricao(prod.getDescricao());
-            prod.setAltura(prod.getAltura());
-            prod.setBusto(prod.getBusto());
-            prod.setCintura(prod.getCintura());
-            prod.setQuadril(prod.getQuadril());
-            prod.setTamanho(prod.getTamanho());
-            prod.setCategoria(prod.getCategoria());
-            produtoRepository.save(prod);
-        }
+    public String alterar(@PathVariable("id") Integer id, Produto produto) {
+        produtoService.updateQuantidade(id, produto);
         return "redirect:/produtos/estoque?nomeproduto=";
     }
 
     @DeleteMapping("/excluir/{id}")
-    public String excluir(@PathVariable("id") Integer id){
-        produtoRepository.deleteById(id);
+    public String excluir(@PathVariable("id") Integer id) {
+        produtoService.excluir(id);
         return "redirect:/produtos/estoque?nomeproduto=";
     }
 
     @GetMapping("/categoria")
-    public ModelAndView buscaPorCategoria(String categoria, Produto produto){
-        ModelAndView mv = new ModelAndView("/produtos/lista");
+    public ModelAndView buscaPorCategoria(String categoria, Produto produto) {
+        ModelAndView mv = new ModelAndView("/produtos/categoria");
         List<Produto> prodCategoria = produtoCustomRepository.getProdutoPorCategoria(categoria);
         mv.addObject("lista", prodCategoria);
         return mv;
     }
 
     @GetMapping("/genero")
-    public ModelAndView buscaPorGenero(String sexo, Produto produto){
-        ModelAndView mv = new ModelAndView("/produtos/lista");
+    public ModelAndView buscaPorGenero(String sexo, Produto produto) {
+        ModelAndView mv = new ModelAndView("/produtos/categoria");
         List<Produto> prodGenero = produtoCustomRepository.getProdutoPorGenero(sexo);
         mv.addObject("lista", prodGenero);
         return mv;
     }
 
     @GetMapping("/tamanho")
-    public ModelAndView buscaPorTamanho(String tamanho, Produto produto){
-        ModelAndView mv = new ModelAndView("/produtos/lista");
+    public ModelAndView buscaPorTamanho(String tamanho, Produto produto) {
+        ModelAndView mv = new ModelAndView("/produtos/categoria");
         List<Produto> prodTamanho = produtoCustomRepository.getProdutoPorTamanho(tamanho);
         mv.addObject("lista", prodTamanho);
         return mv;

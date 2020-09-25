@@ -177,139 +177,58 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;">
-            </br>
-            <div class="container" style="background-color: white;">
-                <div>
-                    </br></br>
-                    <form action="/produtos/create" method="POST"
-                          enctype="multipart/form-data">
-                        <div class="alert alert-success" role="alert">
-                            <h4 class="alert-heading">CADASTRO DE PRODUTO</h4>
-                            <p>TODOS OS CAMPOS SÃO OBRIGATÓRIO PARA INCLUIR UM PRODUTO</p>
+            </br></br>
+            <div style="background-color: white;">
+                </br></br>
+                <form action="/produtos/create" method="get">
+                    <button style="margin-left: 28px;" class="btn btn-primary" type="submit">Adicionar</button>
+                </form>
+                <hr>
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+                            <c:forEach items="${produtos}" var="produto">
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm" style="width: 280px;">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                             src="/${produto.img1}"
+                                             preserveAspectRatio="xMidYMid slice"
+                                             focusable="false"
+                                             role="img"
+                                             aria-label="Placeholder: Thumbnail">
+                                        <title>Placeholder</title>
+                                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                                        <text x="50%" y="50%" fill="#eceeef"
+                                              dy=".3em" style="text-align: center">${produto.nome}
+                                        </text>
+                                        </img>
+                                        <div class="card-body">
+                                            <p class="card-text">${produto.descricao}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <form action="/administrador/visualizar/${produto.id}" method="GET">
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Ver</button>
+                                                    </form>
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                        <a href="/produtos/edit/${produto.id}">Editar</a>
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted"><fmt:formatNumber value="${produto.valor}"
+                                                                                            type="currency"/></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
-                        <div>
-                            <div class="form-group">
-                                <label>Imagem 1</label>
-                                <input type="file" class="form-control-file" name="sumario1">
-                            </div>
-                            <div class="form-group">
-                                <label>Imagem 2</label>
-                                <input type="file" class="form-control-file" name="sumario2">
-                            </div>
-                            <div class="form-group">
-                                <label>Imagem 3</label>
-                                <input type="file" class="form-control-file" name="sumario3">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Nome: </label>
-                            <input class="form-control" type="text" placeholder="Digite o nome do produto" name="nome"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="sexo" value="Masculino">
-                                <label class="form-check-label">Masculino</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="sexo" value="Feminino">
-                                <label class="form-check-label">Feminino</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Código: </label>
-                            <input class="form-control" placeholder="00000000000" type="text" name="codigo" required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Descrição: </label>
-                            <textarea class="form-control" type="text" name="descricao"
-                                      placeholder="Digite a descrição do produto" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Valor: </label>
-                            <input type="text" class="form-control" name="valor" placeholder="00.00" required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantidade: </label>
-                            <input class="form-control" type="text" placeholder="00" required name="quantidade"/>
-                        </div>
-                        <div class="form-group">
-                            <label>Modelo: </label>
-                            <input class="form-control" type="text" name="modelo"
-                                   placeholder="Digite o modelo do produto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Altura: </label>
-                            <input class="form-control" type="text" name="altura"
-                                   placeholder="Digite a altura do produto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Busto: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho do busto" name="busto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Cintura: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho da cintura"
-                                   name="cintura"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Quadril: </label>
-                            <input class="form-control" type="text" placeholder="digite o tamanho do quadril"
-                                   name="quadril"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Tamanho: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho do produto"
-                                   name="tamanho"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Categoria</label>
-                            <select name="categoria" class="form-control" required>
-                                <option>Calça</option>
-                                <option>Vestido</option>
-                                <option>Shorts</option>
-                                <option>Blusa</option>
-                                <option>Mascara</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Este produto pode ir na maquina de lavar ?"</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta1"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Este produto pode ir na maquina secar ?</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta2"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Pode usar amaciante para lavar este produto ?</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta3"
-                                   required/>
-                        </div>
-                        <button style="
-            width: 1000px;
-            width: 1000px;
-            height: 39px;
-            padding-left: 15px;
-            padding-right: 15px;
-            margin-left: 60px;" type="submit" class="btn btn-primary">
-                            Save
-                        </button>
-                        </br></br>
-                    </form>
+                    </div>
+                    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
+                            style="display: block; height: 692px; width: 1639px;"></canvas>
                 </div>
             </div>
-            <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
-                    style="display: block; height: 692px; width: 1639px;"></canvas>
         </main>
-        <script src="../../resources/jquery/jquery-3.5.1.min.js"></script>
+    </div>
+</div>
+<script src="../../resources/jquery/jquery-3.5.1.min.js"></script>
 </body>
-
 </html>

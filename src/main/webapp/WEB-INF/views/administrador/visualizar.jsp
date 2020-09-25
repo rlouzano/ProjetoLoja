@@ -177,139 +177,165 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;">
-            </br>
+            </br></br>
             <div class="container" style="background-color: white;">
                 <div>
                     </br></br>
-                    <form action="/produtos/create" method="POST"
-                          enctype="multipart/form-data">
+                    <form enctype="multipart/form-data">
                         <div class="alert alert-success" role="alert">
-                            <h4 class="alert-heading">CADASTRO DE PRODUTO</h4>
-                            <p>TODOS OS CAMPOS SÃO OBRIGATÓRIO PARA INCLUIR UM PRODUTO</p>
+                            <h4 class="alert-heading">DETALHES DO PRODUTO</h4>
                         </div>
-                        <div>
-                            <div class="form-group">
-                                <label>Imagem 1</label>
-                                <input type="file" class="form-control-file" name="sumario1">
+
+                        <div class="jumbotron">
+                            <div class="col-md-4 order-md-2 mb-4" style="margin-left: 583px; margin-top: 7px;">
+
+                                <ul class="list-group mb-3" style=" width: 396px;">
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div>
+                                            <h6 class="my-0">Nome do produto</h6>
+                                            <small class="text-muted">${prod.nome}</small>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div>
+                                            <h6 class="my-0">Quantidade</h6>
+                                            <small class="text-muted">${prod.quantidade}</small>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                        <div>
+                                            <h6 class="my-0">Genero</h6>
+                                            <small class="text-muted">${prod.sexo}</small>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <div class="text-success">
+                                            <h6 class="my-0">Código Produto</h6>
+                                            <small>${prod.codigo}</small>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Total (Real)</span>
+                                        <strong>R$ ${prod.valor}</strong>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="form-group">
-                                <label>Imagem 2</label>
-                                <input type="file" class="form-control-file" name="sumario2">
+                            <div style="margin-top: -341px;margin-left: 149px;">
+                                <div class="form-group">
+                                    <img name="img1" style="width: 242px;" src="/${prod.img1}">
+                                </div>
+                                <div class="form-group">
+                                    <img name="img2" style="width: 107px;margin-left: 272px; margin-top: -431px;"
+                                         src="/${prod.img2}">
+                                </div>
+                                <div class="form-group">
+                                    <img name="img3" style="width: 104px;margin-left: 275px; margin-top: -246px;"
+                                         src="/${prod.img3}">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Imagem 3</label>
-                                <input type="file" class="form-control-file" name="sumario3">
+
+
+                            <div class="jumbotron">
+                                <div class="col-md-4 order-md-2 mb-4" style="margin-left: 30px; margin-top: -51px;">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-muted">Detalhe do produto</span>
+                                    </h4>
+                                    <ul class="list-group mb-3" style=" width: 915px;">
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Descrição</h6>
+                                                <small class="text-muted">${prod.descricao}</small>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Modelo</h6>
+                                                <small class="text-muted">${prod.modelo}</small>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Altura</h6>
+                                                <small class="text-muted">${prod.altura}</small>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Busto</h6>
+                                                <small class="text-muted">${prod.busto}</small>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Cintura</h6>
+                                                <small class="text-muted">${prod.cintura}</small>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Quadril</h6>
+                                                <small class="text-muted">${prod.quadril}</small>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Tamanho</h6>
+                                                <small class="text-muted">${prod.tamanho}</small>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 class="my-0">Categoria</h6>
+                                                <small class="text-muted">${prod.categoria}</small>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+
+                                    <h5>Perguntas e respostas</h5>
+
+
+                                    <div class="jumbotron">
+                                        <div class="col-md-4 order-md-2 mb-4" style="margin-left: -109px; margin-top: -51px;">
+                                            <ul class="list-group mb-3" style=" width: 1030px;">
+                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                    <div>
+                                                        <h6 class="my-0">Este produto pode ir na maquina de lavar ?</h6>
+                                                        <small class="text-muted">${prod.pergunta1}</small>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                    <div>
+                                                        <h6 class="my-0">Este produto pode ir na maquina secar ?</h6>
+                                                        <small class="text-muted">${prod.pergunta2}</small>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                    <div>
+                                                        <h6 class="my-0">Pode usar amaciante para lavar este produto ?</h6>
+                                                        <small class="text-muted">${prod.pergunta3}</small>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                </div>
+                                <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
+                                        style="display: block; height: 692px; width: 1639px;"></canvas>
+
+
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Nome: </label>
-                            <input class="form-control" type="text" placeholder="Digite o nome do produto" name="nome"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="sexo" value="Masculino">
-                                <label class="form-check-label">Masculino</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="sexo" value="Feminino">
-                                <label class="form-check-label">Feminino</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Código: </label>
-                            <input class="form-control" placeholder="00000000000" type="text" name="codigo" required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Descrição: </label>
-                            <textarea class="form-control" type="text" name="descricao"
-                                      placeholder="Digite a descrição do produto" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Valor: </label>
-                            <input type="text" class="form-control" name="valor" placeholder="00.00" required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantidade: </label>
-                            <input class="form-control" type="text" placeholder="00" required name="quantidade"/>
-                        </div>
-                        <div class="form-group">
-                            <label>Modelo: </label>
-                            <input class="form-control" type="text" name="modelo"
-                                   placeholder="Digite o modelo do produto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Altura: </label>
-                            <input class="form-control" type="text" name="altura"
-                                   placeholder="Digite a altura do produto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Busto: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho do busto" name="busto"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Cintura: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho da cintura"
-                                   name="cintura"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Quadril: </label>
-                            <input class="form-control" type="text" placeholder="digite o tamanho do quadril"
-                                   name="quadril"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Tamanho: </label>
-                            <input class="form-control" type="text" placeholder="Digite o tamanho do produto"
-                                   name="tamanho"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Categoria</label>
-                            <select name="categoria" class="form-control" required>
-                                <option>Calça</option>
-                                <option>Vestido</option>
-                                <option>Shorts</option>
-                                <option>Blusa</option>
-                                <option>Mascara</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Este produto pode ir na maquina de lavar ?"</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta1"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Este produto pode ir na maquina secar ?</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta2"
-                                   required/>
-                        </div>
-                        <div class="form-group">
-                            <label>Perguntas: Pode usar amaciante para lavar este produto ?</label>
-                            <input class="form-control" type="text" placeholder="Responde a pergunta" name="pergunta3"
-                                   required/>
-                        </div>
-                        <button style="
-            width: 1000px;
-            width: 1000px;
-            height: 39px;
-            padding-left: 15px;
-            padding-right: 15px;
-            margin-left: 60px;" type="submit" class="btn btn-primary">
-                            Save
-                        </button>
-                        </br></br>
+
+
                     </form>
                 </div>
             </div>
-            <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
-                    style="display: block; height: 692px; width: 1639px;"></canvas>
         </main>
-        <script src="../../resources/jquery/jquery-3.5.1.min.js"></script>
+    </div>
+</div>
+<script src="../../resources/jquery/jquery-3.5.1.min.js"></script>
 </body>
-
 </html>

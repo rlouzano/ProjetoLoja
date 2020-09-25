@@ -11,7 +11,7 @@ public class PrincipalController {
 
     @GetMapping("/menu")
     public ModelAndView menu(){
-        ModelAndView mv = new ModelAndView("menu/principal");
+        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 }

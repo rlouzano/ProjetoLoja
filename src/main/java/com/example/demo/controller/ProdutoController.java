@@ -39,6 +39,7 @@ public class ProdutoController {
         mv.addObject("produtos", produtos);
         return mv;
     }
+
     @GetMapping(value = "/produtos")
     public ModelAndView listaProdutos(Produto produto, Model model) {
         List<Produto> produtos = produtoCustomRepository.getProdutoAtivo();
@@ -106,8 +107,8 @@ public class ProdutoController {
 
     @PutMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, @ModelAttribute Produto produto) {
-            produtoService.update(id, produto);
-            return "redirect:/produtos/listar";
+        produtoService.update(id, produto);
+        return "redirect:/produtos/listar";
 
     }
 
@@ -124,27 +125,44 @@ public class ProdutoController {
     }
 
     @GetMapping("/categoria")
-    public ModelAndView buscaPorCategoria(String categoria, Produto produto) {
-        ModelAndView mv = new ModelAndView("/produtos/categoria");
-        List<Produto> prodCategoria = produtoCustomRepository.getProdutoPorCategoria(categoria);
-        mv.addObject("lista", prodCategoria);
+    public ModelAndView buscaPorCategoria(String info, Produto produto) {
+        ModelAndView mv = new ModelAndView("/adm/pesquisa");
+        List<Produto> p = produtoCustomRepository.getProdutoPorFiltros(info+"%");
+        for (Produto prod : p){
+            if(!prod.getCategoria().equals(null)){
+                mv.addObject("produtos", p);
+                return mv;
+            }
+        }
+        int n = Integer.parseInt(info);
+        List<Produto> produtos = produtoCustomRepository.getProdutoPorFiltrosCodigo(n);
+        mv.addObject("produtos", produtos);
         return mv;
     }
 
     @GetMapping("/genero")
-    public ModelAndView buscaPorGenero(String sexo, Produto produto) {
-        ModelAndView mv = new ModelAndView("/produtos/categoria");
-        List<Produto> prodGenero = produtoCustomRepository.getProdutoPorGenero(sexo);
-        mv.addObject("lista", prodGenero);
+    public ModelAndView buscaPorGenero(String info, Produto produto) {
+        ModelAndView mv = new ModelAndView("produtos/categoria");
+        List<Produto> prod = produtoCustomRepository.getProdutoPorGenero(info);
+        mv.addObject("lista", prod);
         return mv;
     }
 
     @GetMapping("/tamanho")
-    public ModelAndView buscaPorTamanho(String tamanho, Produto produto) {
-        ModelAndView mv = new ModelAndView("/produtos/categoria");
-        List<Produto> prodTamanho = produtoCustomRepository.getProdutoPorTamanho(tamanho);
+    public ModelAndView buscaPorTamanho(String info, Produto produto) {
+        ModelAndView mv = new ModelAndView("produtos/categoria");
+        List<Produto> prodTamanho = produtoCustomRepository.getProdutoPorTamanho(info);
         mv.addObject("lista", prodTamanho);
         return mv;
     }
+    @GetMapping("/pesquisa")
+    public ModelAndView buscaPorPesquisa(String info, Produto produto) {
+        ModelAndView mv = new ModelAndView("produtos/categoria");
+        List<Produto> prodTamanho = produtoCustomRepository.getProdutoPorCategoria(info);
+        mv.addObject("lista", prodTamanho);
+        return mv;
+    }
+
+
 
 }

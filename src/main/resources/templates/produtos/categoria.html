@@ -9,22 +9,11 @@
 </head>
 
 <body>
-<!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-</head>
-
-<body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <form action="/produtos/estoque" method="GET" class="form-inline">
+        <form th:action="@{/produtos/categoria}" method="GET" class="form-inline">
             <div>
-                <input class="form-control mr-sm-2" type="search" name="nomeproduto" var="${param.pesquisa}"
+                <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}"
                        placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </div>
@@ -134,8 +123,8 @@
                         <hr>
                         <li>
                             <div>
-                                <form action="/produtos/genero" method="GET">
-                                    <input type="hidden" name="sexo" value="Masculino"/>
+                                <form th:action="@{/produtos/genero}" method="GET">
+                                    <input type="hidden" name="info" value="Masculino"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-primary">Masculino
                                     </button>
@@ -143,8 +132,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/genero" method="GET">
-                                    <input type="hidden" name="sexo" value="Feminino"/>
+                                <form th:action="@{/produtos/genero}" method="GET">
+                                    <input type="hidden" name="info" value="Feminino"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-danger">Feminino
                                     </button>
@@ -152,8 +141,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Vestido"/>
+                                <form th:action="@{/produtos/pesquisa}" method="GET">
+                                    <input type="hidden" name="info" value="Vestido"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-secondary">Vestidos
                                     </button>
@@ -161,8 +150,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Shorts"/>
+                                <form th:action="@{/produtos/pesquisa}" th:method="GET">
+                                    <input type="hidden" th:name="info" th:value="Shorts"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-success">Shorts
                                     </button>
@@ -170,8 +159,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Blusa"/>
+                                <form th:action="@{/produtos/pesquisa}" th:method="GET">
+                                    <input type="hidden" th:name="info" th:value="Blusa"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-warning">Blusas
                                     </button>
@@ -179,8 +168,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Máscara"/>
+                                <form th:action="@{/produtos/categoria}" method="GET">
+                                    <input type="hidden" name="info" value="Mascara"/>
                                     <button type="submit" style="width: 97px" class="btn btn-info">Máscara</button>
                                 </form>
                             </div>
@@ -190,25 +179,27 @@
                 </ul>
             </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;">
-            </br></br>
-            <div style="background-color: white;">
-                </br></br>
-                <div class="container">
-                    <div class="container" style="background-color: white;" th:each="produto : ${lista}">
-                        <div>
-                            <div class="rounded float-left" style="width: 255px; text-align: center;">
-                                <div>
-                                    <img th:src="/${produto.img1}" class="ui-item__image" width="224" height="224">
-                                </div>
-                                <div style="text-align: center;">
-                                    <a href="/produtos/edit/${produto.id}" th:text="${produto.nome}"></a>
-                                    <p style="color: #007bff" th:text="${produto.valor}"></a>
-                                </div>
-                            </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;"></br>
+            <div class="row container">
+                <div class="col-lg-4 col-md-12 mb-4" th:each="produto : ${lista}">
+                    <div class="card">
+                        <div class="view overlay">
+                            <a th:href="@{/produtos/detalhes/{id}(id = ${produto.id})}">
+                                <img th:src="${produto.img1}" class="card-img-top"
+                                     alt="">
+
+                                <div class="mask rgba-white-slight waves-effect waves-light"></div>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title" th:text="${produto.nome}"></h4>
+                            <p class="card-text" th:text="${produto.valor}"></p>
+                            <a th:href="@{/produtos/produtos{id}(id = ${produto.id})}"
+                               class="btn btn-indigo waves-effect waves-light">Detalhes</a>
                         </div>
                     </div>
                 </div>
+
             </div>
             <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
                     style="display: block; height: 692px; width: 1639px;"></canvas>

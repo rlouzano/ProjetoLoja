@@ -11,9 +11,9 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <form action="/produtos/estoque" method="GET" class="form-inline">
+        <form th:action="@{/produtos/categoria}" method="GET" class="form-inline">
             <div>
-                <input class="form-control mr-sm-2" type="search" name="nomeproduto" var="${param.pesquisa}"
+                <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}"
                        placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </div>
@@ -123,8 +123,8 @@
                         <hr>
                         <li>
                             <div>
-                                <form action="/produtos/genero" method="GET">
-                                    <input type="hidden" name="sexo" value="Masculino"/>
+                                <form th:action="@{/produtos/genero}" method="GET">
+                                    <input type="hidden" name="info" value="Masculino"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-primary">Masculino
                                     </button>
@@ -132,8 +132,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/genero" method="GET">
-                                    <input type="hidden" name="sexo" value="Feminino"/>
+                                <form th:action="@{/produtos/genero}" method="GET">
+                                    <input type="hidden" name="info" value="Feminino"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-danger">Feminino
                                     </button>
@@ -141,8 +141,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Vestido"/>
+                                <form th:action="@{/produtos/pesquisa}" method="GET">
+                                    <input type="hidden" name="info" value="Vestido"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-secondary">Vestidos
                                     </button>
@@ -150,8 +150,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Shorts"/>
+                                <form th:action="@{/produtos/pesquisa}" th:method="GET">
+                                    <input type="hidden" th:name="info" th:value="Shorts"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-success">Shorts
                                     </button>
@@ -159,8 +159,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Blusa"/>
+                                <form th:action="@{/produtos/pesquisa}" th:method="GET">
+                                    <input type="hidden" th:name="info" th:value="Blusa"/>
                                     <button type="submit" style="width: 97px"
                                             class="btn btn-warning">Blusas
                                     </button>
@@ -168,8 +168,8 @@
                             </div>
                             <hr>
                             <div>
-                                <form action="/produtos/categoria" method="GET">
-                                    <input type="hidden" name="categoria" value="Máscara"/>
+                                <form th:action="@{/produtos/categoria}" method="GET">
+                                    <input type="hidden" name="info" value="Mascara"/>
                                     <button type="submit" style="width: 97px" class="btn btn-info">Máscara</button>
                                 </form>
                             </div>

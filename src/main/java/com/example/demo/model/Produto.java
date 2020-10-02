@@ -23,7 +23,7 @@ public class Produto implements Serializable {
     private String nome;
     private String cor;
     private String descricao;
-    private BigDecimal codigo;
+    private Integer codigo;
     private int quantidade;
     private double valor;
     private String sexo;
@@ -42,7 +42,7 @@ public class Produto implements Serializable {
     public Produto() {
     }
 
-    public Produto(String img1, String img2, String img3, String nome, String cor, String descricao, BigDecimal codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
+    public Produto(String img1, String img2, String img3, String nome, String cor, String descricao, Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
@@ -66,7 +66,7 @@ public class Produto implements Serializable {
         this.active = active;
     }
 
-    public Produto(Integer id, String img1, String img2, String img3, String nome, String cor, String descricao, BigDecimal codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
+    public Produto(Integer id, String img1, String img2, String img3, String nome, String cor, String descricao, Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
         this.id = id;
         this.img1 = img1;
         this.img2 = img2;
@@ -147,11 +147,11 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public BigDecimal getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigDecimal codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

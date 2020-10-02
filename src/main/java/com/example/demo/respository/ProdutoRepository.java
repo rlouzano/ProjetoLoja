@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
+    List<Produto> findBySexo(String nomeSexo);
+
 }

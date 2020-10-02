@@ -25,6 +25,23 @@ public class ProdutoCustomRepository {
         return query.getResultList();
     }
 
+
+
+    public List<Produto> getProdutoPorFiltros(String categoriaProduto){
+        String jpql = "select p from Produto p where p.nome like :pNome";
+        TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
+        query.setParameter("pNome", categoriaProduto);
+        return query.getResultList();
+    }
+
+    public List<Produto> getProdutoPorFiltrosCodigo(Integer numero){
+        String jpql = "select p from Produto p where p.codigo = :pCodigo";
+        TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
+        query.setParameter("pCodigo", numero);
+        return query.getResultList();
+    }
+
+
     public List<Produto> getProdutoPorCategoria(String categoriaProduto){
         String jpql = "select p from Produto p where p.categoria like :pCategoria";
         TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
@@ -32,10 +49,10 @@ public class ProdutoCustomRepository {
         return query.getResultList();
     }
 
-    public List<Produto> getProdutoPorGenero(String sexo){
+    public List<Produto> getProdutoPorGenero(String nomeSexo){
         String jpql = "select p from Produto p where p.sexo like :pSexo";
         TypedQuery<Produto> query = em.createQuery(jpql, Produto.class);
-        query.setParameter("pSexo", sexo);
+        query.setParameter("pSexo", nomeSexo);
         return query.getResultList();
     }
 

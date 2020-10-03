@@ -9,14 +9,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 public class AppWebConfiguration {
 
-    /*@Bean
-    public InternalResourceViewResolver internalResourceViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
-*/
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();

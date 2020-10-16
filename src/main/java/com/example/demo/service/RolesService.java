@@ -7,6 +7,8 @@ public interface RolesService {
 
     public List<Role> findAll();
 
+    public Role buscaId(long id);
+
     public Role create(Role role);
 
     public boolean delete(Long id);

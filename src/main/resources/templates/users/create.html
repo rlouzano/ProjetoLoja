@@ -189,29 +189,29 @@
                             <input type="text" th:field="*{name}" name="name" placeholder="Digite seu nome"
                                    class="form-control">
                             <span class="text-danger" th:if="${#fields.hasErrors('name')}"
-                                  th:errors="*{name}">User name error</span>
+                                  th:errors="*{name}">Erro no nome</span>
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="text" th:field="*{lastname}" name="lastname" placeholder="Digite seu sobrenome"
+                            <input type="text" th:field="*{cpf}" name="cpf" placeholder="999.999.999.99"
                                    class="form-control">
-                            <span class="text-danger" th:if="${#fields.hasErrors('lastname')}"
-                                  th:errors="*{name}">User lastname error</span>
+                            <span class="text-danger" th:if="${#fields.hasErrors('cpf')}"
+                                  th:errors="*{cpf}">Erro no cpf</span>
                         </div>
                         <div class="form-group col-md-12">
                             <input type="text" th:field="*{email}" name="email" placeholder="Digite seu email"
                                    class="form-control">
                             <span class="text-danger" th:if="${#fields.hasErrors('email')}"
-                                  th:errors="*{name}">User email error</span>
+                                  th:errors="*{name}">Erro no email</span>
                         </div>
                         <div class="form-group col-md-12">
                             <input type="password" th:field="*{password}" name="password"
                                    placeholder="Digite seu password"
                                    class="form-control">
                             <span class="text-danger" th:if="${#fields.hasErrors('password')}"
-                                  th:errors="*{name}">User password error</span>
+                                  th:errors="*{name}">Erro no password</span>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
                     </div>
                 </form>

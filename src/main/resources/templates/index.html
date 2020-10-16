@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org"
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <title>Document</title>
 </head>
-
 <body>
+
 <header>
     <nav class="navbar navbar-light bg-light">
         <form action="/produtos/estoque" method="GET" class="form-inline">
@@ -28,7 +29,8 @@
         </button>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#" style="color: aliceblue;">Sign out</a>
+                <a class="nav-link" href="/login?errors=true" style="color: aliceblue;"><span
+                        th:text="${usuario.roles}">Sign out</span></a>
             </li>
         </ul>
     </nav>
@@ -75,43 +77,6 @@
                                     </path>
                                 </svg>
                                 Carrinho
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a style="color: aliceblue;" class="nav-link" th:href="@{/produtos/listar}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-users">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                Administrador
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a style="color: aliceblue;" class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-bar-chart-2">
-                                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                                </svg>
-                                Relatórios
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a style="color: aliceblue;" class="nav-link" th:href="@{/produtos/estoque?nomeproduto=}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-layers">
-                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                    <polyline points="2 17 12 22 22 17"></polyline>
-                                    <polyline points="2 12 12 17 22 12"></polyline>
-                                </svg>
-                                Estoque
                             </a>
                         </li>
                     </div>

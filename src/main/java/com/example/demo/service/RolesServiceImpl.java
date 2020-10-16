@@ -24,6 +24,11 @@ public class RolesServiceImpl implements RolesService{
     }
 
     @Override
+    public Role buscaId(long id) {
+        return findById(id);
+    }
+
+    @Override
     public Role create(Role role) {
         role.setName(role.getName().toUpperCase()); // para que fique sempre com letras maiusculas (toUpperCase)
         Role roleCreated = this.repository.save(role);

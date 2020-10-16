@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,12 @@ public class User {
 
     @Column
     @NotEmpty(message = "Não pode ser vazio")
+    @Length(min = 5)
     private String name;
-    @Column
-    @NotEmpty(message = "Não pode ser vazio")
-    private String lastname;
+
+    @CPF(message = "cpf inválido")
+    private String cpf;
+
     @Column
     @NotEmpty(message = "Não pode ser vazio")
     @Length(min = 5, message = "O password deverá ter 5 digitos")
@@ -36,35 +38,29 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",  /*Aqui é um foregn key, onde crio uma tabela com os dois id de cada tabela: User e Role*/
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+       joinColumns = @JoinColumn(name = "user_id"),
+       inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String name, String email, String lastname, String password, Boolean active) {
-        this.name = name;
+    public User(String email, String name,  String cpf, String password, Boolean active, Set<Role> roles) {
         this.email = email;
-        this.lastname = lastname;
+        this.name = name;
+        this.cpf = cpf;
         this.password = password;
         this.active = active;
+        this.roles = roles;
     }
 
-    public User(Long id, String name, String email, String lastname, String password, Boolean active) {
+    public User(Long id, String email, String name, String cpf, String password, Boolean active, Set<Role> roles) {
         this.id = id;
-        this.name = name;
         this.email = email;
-        this.lastname = lastname;
+        this.name = name;
+        this.cpf = cpf;
         this.password = password;
         this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -76,14 +72,6 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -92,12 +80,20 @@ public class User {
         this.email = email;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getName() {
+        return name;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getPassword() {
@@ -114,5 +110,26 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", roles=" + roles +
+                '}';
     }
 }

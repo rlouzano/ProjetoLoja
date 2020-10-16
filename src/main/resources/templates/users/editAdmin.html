@@ -180,44 +180,50 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: #a38c6e;">
-            </br></br></br></br>
-            <main role="main" class="container">
-                <form th:action="@{/users/new}" th:method="GET">
-                    <button type="submit" class="btn btn-success">Adicionar</button>
+            </br>
+            <div class="container">
+                <h4>Edição de Usuários</h4>
+                <form action="" th:action="@{/administrador/edit/{id}(id = ${user.id})}" th:object="${user}"
+                      th:method="post">
+                    <input type="hidden" name="_method" value="put"/>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <input type="text" th:field="*{name}"
+                                   class="form-control">
+                            <span class="text-danger" th:if="${#fields.hasErrors('name')}"
+                                  th:errors="*{name}">Erro no nome do usuário</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="hidden" th:field="*{email}"
+                                   class="form-control">
+                            <span class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                  th:errors="*{email}">Erro no email do usuário</span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <input type="text" th:field="*{cpf}"
+                                   class="form-control">
+                            <span class="text-danger" th:if="${#fields.hasErrors('cpf')}"
+                                  th:errors="*{cpf}">Erro no cpf do usuário</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="password" th:field="*{password}"
+                                   placeholder="Digite seu password"
+                                   class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" th:field="*{active}" class="form-check-input"/>
+                                <span class="form-check-input"></span>
+                                <span class="custom-control-description">Active?</span>
+                            </label>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
                 </form>
-                </br>
-                <table class="table table-bordered" style="background-color: white;">
-                    <thead>
-                    <tr>
-                        <th>NOME</th>
-                        <th>CPF</th>
-                        <th>EMAIL</th>
-                        <th>ATIVO</th>
-                        <th>AÇÂO</th>
-                        <th>AÇÂO</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user : ${list}">
-                        <td th:text="${user.name}"></td>
-                        <td th:text="${user.cpf}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.active}"></td>
-                        <td>
-                            <form th:action="@{/users/{id}(id = ${user.id})}" th:method="post">
-                                <input type="hidden" name="_method" value="delete"/>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{/users/edit/{id}(id = ${user.id})}" th:method="get">
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </main>
+            </div>
             <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"
                     style="display: block; height: 692px; width: 1639px;"></canvas>
         </main>

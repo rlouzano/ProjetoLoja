@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -14,6 +15,7 @@ public class Role {
     @Column
     @NotEmpty(message = "Não pode ser vazio")
     private String name;
+
 
     public Role() {
     }
@@ -41,5 +43,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

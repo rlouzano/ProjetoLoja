@@ -162,7 +162,4 @@ public class ProdutoController {
         mv.addObject("lista", prodTamanho);
         return mv;
     }
-
-
-
 }

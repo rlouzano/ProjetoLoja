@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Produto;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.respository.RolesRepository;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private final UserRepository repository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RolesRepository rolesRepository;
@@ -42,6 +46,25 @@ public class UserServiceImpl implements UserService{
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return this.repository.save(user);
     }
+    @Override
+    public List<User> findAllWhereRoleEquals(Long role_id, Long user_id) {
+        return this.userService.findAllWhereRoleEquals(role_id, user_id);
+    }
+
+    @Override
+    public User createAdmin(User user, String role) {
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = this.rolesRepository.findByName(role);
+        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        return this.repository.save(user);
+    }
+
+    @Override
+    public User listaPorUm(Long id) {
+        User user = repository.getOne(id);
+        return user;
+
+    }
 
     @Override
     public boolean delete(Long id) {
@@ -59,14 +82,23 @@ public class UserServiceImpl implements UserService{
         if(!u.equals(null)){
             u.setId(user.getId());
             u.setName(user.getName());
-            u.setLastname(user.getLastname());
-            u.setEmail(user.getEmail());
+            u.setEmail(u.getEmail());
+            u.setCpf(user.getCpf());
             u.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
             u.setActive(user.getActive());
             this.repository.save(u);
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public User editRole(User user, Long id, String role) {
+        User user1 = this.repository.getOne(id);
+        Role userRole = this.rolesRepository.findByName(role);
+        user1.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        return this.repository.save(user1);
     }
 
     @Override
@@ -76,5 +108,13 @@ public class UserServiceImpl implements UserService{
 
     private User findById(Long id){
         return this.repository.getOne(id);
+    }
+
+    @Override
+    public User cadastroAdmin(User user, String role){
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = this.rolesRepository.findByName(role);
+        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        return this.repository.save(user);
     }
 }

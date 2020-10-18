@@ -73,8 +73,11 @@ public class ProdutoServiceImpl implements ProdutoService {
             prod.setCor(produto.getCor());
             prod.setCategoria(produto.getCategoria());
             prod.setPergunta1(produto.getPergunta1());
+            prod.setResposta1(produto.getResposta1());
             prod.setPergunta2(produto.getPergunta2());
+            prod.setResposta2(produto.getResposta2());
             prod.setPergunta3(produto.getPergunta3());
+            prod.setResposta3(produto.getResposta3());
             prod.setActive(produto.isActive());
             this.produtoRepository.save(prod);
             return true;
@@ -103,9 +106,12 @@ public class ProdutoServiceImpl implements ProdutoService {
             prod.setTamanho(prod.getTamanho());
             prod.setCor(prod.getCor());
             prod.setCategoria(prod.getCategoria());
-            prod.setPergunta1(prod.getPergunta1());
-            prod.setPergunta2(prod.getPergunta2());
-            prod.setPergunta3(prod.getPergunta3());
+            prod.setPergunta1(produto.getPergunta1());
+            prod.setResposta1(produto.getResposta1());
+            prod.setPergunta2(produto.getPergunta2());
+            prod.setResposta2(produto.getResposta2());
+            prod.setPergunta3(produto.getPergunta3());
+            prod.setResposta3(produto.getResposta3());
             prod.setActive(prod.isActive());
             this.produtoRepository.save(prod);
             return true;

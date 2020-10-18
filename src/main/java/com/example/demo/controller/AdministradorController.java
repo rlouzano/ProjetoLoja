@@ -70,6 +70,12 @@ public class AdministradorController {
         mv.addObject("list", users);
         return mv;
     }
+    @PutMapping("/valida/{id}")
+    public ModelAndView validaStatus(@PathVariable("id") Long id, User user){
+        ModelAndView mv = new ModelAndView("redirect:/administrador/listar");
+        this.userService.updateStatus(id, user);
+        return mv;
+    }
 
     @GetMapping("/inativo")
     public ModelAndView listarInativo(User user) {
@@ -93,12 +99,6 @@ public class AdministradorController {
         ModelAndView mv = new ModelAndView("users/editAdmin");
         User u = userService.listaPorUm(id);
         mv.addObject("user", u);
-        return mv;
-    }
-
-    @GetMapping("/editar/{id}")
-    public ModelAndView editRole(@PathVariable("id") Long id, User user, String role) {
-        ModelAndView mv = new ModelAndView("users/editRoles");
         return mv;
     }
 

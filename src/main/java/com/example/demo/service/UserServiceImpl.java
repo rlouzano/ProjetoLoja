@@ -85,6 +85,22 @@ public class UserServiceImpl implements UserService{
             u.setEmail(u.getEmail());
             u.setCpf(user.getCpf());
             u.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+            u.setActive(u.getActive());
+            this.repository.save(u);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateStatus(Long id, User user) {
+        User u = findById(id);
+        if(!u.equals(null)){
+            u.setId(u.getId());
+            u.setName(u.getName());
+            u.setEmail(u.getEmail());
+            u.setCpf(u.getCpf());
+            u.setPassword(this.bCryptPasswordEncoder.encode(u.getPassword()));
             u.setActive(user.getActive());
             this.repository.save(u);
             return true;

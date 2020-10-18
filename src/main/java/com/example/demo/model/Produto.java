@@ -1,12 +1,7 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 @Table(name = "TB_PRODUTO")
@@ -37,12 +32,18 @@ public class Produto implements Serializable {
     private String pergunta1;
     private String pergunta2;
     private String pergunta3;
+    private String resposta1;
+    private String resposta2;
+    private String resposta3;
     private boolean active = true;
 
     public Produto() {
     }
 
-    public Produto(String img1, String img2, String img3, String nome, String cor, String descricao, Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
+    public Produto(String img1, String img2, String img3, String nome, String cor, String descricao,
+                   Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura,
+                   String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1,
+                   String pergunta2, String pergunta3, boolean active, String resposta1, String resposta2, String resposta3) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
@@ -63,10 +64,16 @@ public class Produto implements Serializable {
         this.pergunta1 = pergunta1;
         this.pergunta2 = pergunta2;
         this.pergunta3 = pergunta3;
+        this.resposta1 = resposta1;
+        this.resposta2 = resposta2;
+        this.resposta3 = resposta3;
         this.active = active;
     }
 
-    public Produto(Integer id, String img1, String img2, String img3, String nome, String cor, String descricao, Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto, String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2, String pergunta3, boolean active) {
+    public Produto(Integer id, String img1, String img2, String img3, String nome, String cor, String descricao,
+                   Integer codigo, int quantidade, double valor, String sexo, String modelo, String altura, String busto,
+                   String cintura, String quadril, String tamanho, String categoria, String pergunta1, String pergunta2,
+                   String pergunta3, boolean active, String resposta1, String resposta2, String resposta3) {
         this.id = id;
         this.img1 = img1;
         this.img2 = img2;
@@ -88,6 +95,9 @@ public class Produto implements Serializable {
         this.pergunta1 = pergunta1;
         this.pergunta2 = pergunta2;
         this.pergunta3 = pergunta3;
+        this.resposta1 = resposta1;
+        this.resposta2 = resposta2;
+        this.resposta3 = resposta3;
         this.active = active;
     }
 
@@ -261,6 +271,30 @@ public class Produto implements Serializable {
 
     public boolean isActive() {
         return active;
+    }
+
+    public String getResposta1() {
+        return resposta1;
+    }
+
+    public void setResposta1(String resposta1) {
+        this.resposta1 = resposta1;
+    }
+
+    public String getResposta2() {
+        return resposta2;
+    }
+
+    public void setResposta2(String resposta2) {
+        this.resposta2 = resposta2;
+    }
+
+    public String getResposta3() {
+        return resposta3;
+    }
+
+    public void setResposta3(String resposta3) {
+        this.resposta3 = resposta3;
     }
 
     public void setActive(boolean active) {

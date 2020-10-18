@@ -200,10 +200,11 @@
                         <th>NOME</th>
                         <th>EMAIL</th>
                         <th>CPF</th>
-                        <th>ATIVO</th>
                         <th>PERFIL</th>
-                        <th>AÇÂO</th>
-                        <th>AÇÂO</th>
+                        <th>STATUS</th>
+                        <th>ATIVO</th>
+                        <th>EDITAR PERFIL</th>
+                        <th>EDITAR USUÁRIO</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -211,16 +212,38 @@
                         <td th:text="${user.name}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.cpf}"></td>
-                        <td th:text="${user.active}"></td>
-                        <td th:text="${user.roles[status.index].name}"></td>
-                        <td>
-                            <form th:action="@{/administrador/edit/{id}(id = ${user.id})}" th:method="get">
-                                <button type="submit" class="btn btn-primary">Editar Usuario</button>
+                        <td style="text-align: center;" th:text="${user.roles[0].name}"></td>
+                        <td style="text-align: center;" th:text="${user.active}? ${true} : ${false}"></td>
+                        <td style="text-align: center;">
+                            <form th:action="@{/administrador/valida/{id}(id = ${user.id})}" th:method="PUT">
+                                <input type="hidden" name="_method" value="put"/>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" th:field="${user.active}"/>
+                                    </label>
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                </div>
                             </form>
                         </td>
-                        <td>
-                            <form th:action="@{/administrador/editar/{id}(id = ${user.id})}" th:method="get">
-                                <button type="submit" class="btn btn-primary">Editar Perfil</button>
+                        <td style="text-align: center;">
+                            <form action="" th:action="@{/administrador/editar/{id}(id = ${user.id})}"
+                                  th:object="${user}" th:method="post">
+                                <input type="hidden" name="_method" value="put"/>
+                                <input type="hidden" th:field="*{id}"/>
+                                <div class="form-group">
+                                    <select name="role">
+                                        <option>USER</option>
+                                        <option>ADMIN</option>
+                                        <option>ESTOQ</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+
+                            </form>
+                        </td>
+                        <td style="text-align: center;">
+                            <form th:action="@{/administrador/edit/{id}(id = ${user.id})}" th:method="get">
+                                <button type="submit" class="btn btn-warning">Editar</button>
                             </form>
                         </td>
                     </tr>

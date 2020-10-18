@@ -16,6 +16,8 @@ public interface UserService {
 
     public boolean update(Long id, User user);
 
+    public boolean updateStatus(Long id, User user);
+
     public User show(Long id);
 
     public User createAdmin(User user, String role);

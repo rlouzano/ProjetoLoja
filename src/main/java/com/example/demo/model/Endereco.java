@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 public class Endereco {
@@ -10,12 +9,21 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    @NotEmpty(message = "Não pode ser vazio")
+    private String tipo;
+
     @Column
     @NotEmpty(message = "Não pode ser vazio")
     private String cep;
     @Column
     @NotEmpty(message = "Não pode ser vazio")
     private String logradouro;
+
+    @Column
+    @NotEmpty(message = "Não pode ser vazio")
+    private String numero;
 
     private String complemento;
     @Column
@@ -35,10 +43,11 @@ public class Endereco {
     public Endereco() {
     }
 
-
-    public Endereco(@NotEmpty(message = "Não pode ser vazio") String cep, @NotEmpty(message = "Não pode ser vazio") String logradouro, String complemento, @NotEmpty(message = "Não pode ser vazio") String bairro, @NotEmpty(message = "Não pode ser vazio") String localidade, @NotEmpty(message = "Não pode ser vazio") String uf, Cliente cliente) {
+    public Endereco(@NotEmpty(message = "Não pode ser vazio") String tipo, @NotEmpty(message = "Não pode ser vazio") String cep, @NotEmpty(message = "Não pode ser vazio") String logradouro, @NotEmpty(message = "Não pode ser vazio") String numero, String complemento, @NotEmpty(message = "Não pode ser vazio") String bairro, @NotEmpty(message = "Não pode ser vazio") String localidade, @NotEmpty(message = "Não pode ser vazio") String uf, Cliente cliente) {
+        this.tipo = tipo;
         this.cep = cep;
         this.logradouro = logradouro;
+        this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.localidade = localidade;
@@ -46,10 +55,12 @@ public class Endereco {
         this.cliente = cliente;
     }
 
-    public Endereco(Long id, @NotEmpty(message = "Não pode ser vazio") String cep, @NotEmpty(message = "Não pode ser vazio") String logradouro, String complemento, @NotEmpty(message = "Não pode ser vazio") String bairro, @NotEmpty(message = "Não pode ser vazio") String localidade, @NotEmpty(message = "Não pode ser vazio") String uf, Cliente cliente) {
+    public Endereco(Long id, @NotEmpty(message = "Não pode ser vazio") String tipo, @NotEmpty(message = "Não pode ser vazio") String cep, @NotEmpty(message = "Não pode ser vazio") String logradouro, @NotEmpty(message = "Não pode ser vazio") String numero, String complemento, @NotEmpty(message = "Não pode ser vazio") String bairro, @NotEmpty(message = "Não pode ser vazio") String localidade, @NotEmpty(message = "Não pode ser vazio") String uf, Cliente cliente) {
         this.id = id;
+        this.tipo = tipo;
         this.cep = cep;
         this.logradouro = logradouro;
+        this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.localidade = localidade;
@@ -65,16 +76,16 @@ public class Endereco {
         this.id = id;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public String getCep() {
         return cep;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public void setCep(String cep) {
@@ -87,6 +98,14 @@ public class Endereco {
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getComplemento() {
@@ -119,5 +138,13 @@ public class Endereco {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

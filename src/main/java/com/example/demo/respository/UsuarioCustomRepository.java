@@ -1,5 +1,7 @@
 package com.example.demo.respository;
 
+import com.example.demo.model.Cliente;
+import com.example.demo.model.Endereco;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,7 @@ public class UsuarioCustomRepository {
     private EntityManager em;
 
     public List<User> getUsurioAtivo(Long id) {
-        String jpql = "select p from User p where p.active = true and p.id != :pId";
+        String jpql = "select p from User p inner join Cliente c on p.id = c.id inner join Endereco e on p.id = e.id where p.active = true and p.id != :pId";
         TypedQuery<User> query = em.createQuery(jpql, User.class);
         query.setParameter("pId", id);
         return query.getResultList();

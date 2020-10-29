@@ -20,31 +20,26 @@ public class Cliente {
     @Length(min = 5)
     private String nome;
 
-    @CPF
+    @CPF(message = "cpf inválido")
     private String cpf;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> endereco = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private User user;
-
     public Cliente() {
     }
 
-    public Cliente(@NotEmpty(message = "Não pode ser vazio") @Length(min = 5) String nome, @CPF String cpf, List<Endereco> endereco, User user) {
+    public Cliente(@NotEmpty(message = "Não pode ser vazio") @Length(min = 5) String nome, @CPF String cpf, List<Endereco> endereco) {
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
-        this.user = user;
     }
 
-    public Cliente(Long id, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5) String nome, @CPF String cpf, List<Endereco> endereco, User user) {
+    public Cliente(Long id, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5) String nome, @CPF String cpf, List<Endereco> endereco) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
-        this.user = user;
     }
 
     public Long getId() {
@@ -79,11 +74,4 @@ public class Cliente {
         this.endereco = endereco;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

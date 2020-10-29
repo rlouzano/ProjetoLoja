@@ -33,13 +33,13 @@ public class RoleController {
     @GetMapping("/new")
     public String create(Model model){
         model.addAttribute("role", new Role());
-        return "roles/create";
+        return "roles/cadastro";
     }
 
     @PostMapping("/")
     public String save(@Valid @ModelAttribute("role") Role role, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
-            return "roles/create";
+            return "roles/cadastro";
         }
         Role roleCreated = this.rolesService.create(role);
         return "redirect:/roles";

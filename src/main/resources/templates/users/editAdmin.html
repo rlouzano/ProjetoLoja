@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+>
 
 <head>
     <meta charset="UTF-8">
@@ -183,38 +183,86 @@
             </br>
             <div class="container">
                 <h4>Edição de Usuários</h4>
-                <form action="" th:action="@{/administrador/edit/{id}(id = ${user.id})}" th:object="${user}"
-                      th:method="post">
+                <form th:action="@{/administrador/edit/{id}(id = ${user.id})}" th:object="${user}" th:method="post">
                     <input type="hidden" name="_method" value="put"/>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <input type="text" th:field="*{name}"
-                                   class="form-control">
-                            <span class="text-danger" th:if="${#fields.hasErrors('name')}"
-                                  th:errors="*{name}">Erro no nome do usuário</span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="hidden" th:field="*{email}"
-                                   class="form-control">
-                            <span class="text-danger" th:if="${#fields.hasErrors('email')}"
-                                  th:errors="*{email}">Erro no email do usuário</span>
+                        <div class="form-group" th:object="${cliente}">
+                            <div class="form-group">
+                                <label>Nome:</label>
+                                <input type="text" th:field="*{nome}" name="nome" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('nome')}"
+                                      th:errors="*{nome}">Erro no nome do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Cpf:</label>
+                                <input type="text" th:field="*{cpf}" name="cpf" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('cpf')}"
+                                      th:errors="*{cpf}">Erro no cpf do usuário</span>
+                            </div>
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <input type="text" th:field="*{cpf}"
-                                   class="form-control">
-                            <span class="text-danger" th:if="${#fields.hasErrors('cpf')}"
-                                  th:errors="*{cpf}">Erro no cpf do usuário</span>
+                        <div class="form-group" th:object="${user}">
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <input type="text" th:field="*{email}" name="email" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                      th:errors="*{email}">Erro no email do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Password:</label>
+                                <input type="password" th:field="*{password}" name="password"
+                                       placeholder="Digite seu password"
+                                       class="form-control" >
+                                <span class="text-danger" th:if="${#fields.hasErrors('password')}"
+                                      th:errors="*{password}">Erro no cpf do usuário</span>
+                            </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <input type="password" th:field="*{password}"
-                                   placeholder="Digite seu password"
-                                   class="form-control">
+
+                        <div class="form-group" th:object="${endereco}">
+                            <div class="form-group">
+                                <label>Cep:</label>
+                                <input type="text" th:field="*{cep}" name="cep" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('cep')}"
+                                      th:errors="*{cep}">Erro no cep do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Logradouro:</label>
+                                <input type="text" th:field="*{logradouro}" name="logradouro" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('logradouro')}"
+                                      th:errors="*{logradouro}">Erro no logradouro do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Complemento:</label>
+                                <input type="text" th:field="*{complemento}" name="complemento" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('complemento')}"
+                                      th:errors="*{complemento}">Erro no complemento do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Bairro:</label>
+                                <input type="text" th:field="*{bairro}" name="bairro" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('bairro')}"
+                                      th:errors="*{bairro}">Erro no bairro do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Cidade:</label>
+                                <input type="text" th:field="*{localidade}" name="localidade" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('localidade')}"
+                                      th:errors="*{localidade}">Erro no localizade do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <label>UF:</label>
+                                <input type="text" th:field="*{uf}" name="uf" class="form-control" required>
+                                <span class="text-danger" th:if="${#fields.hasErrors('uf')}"
+                                      th:errors="*{uf}">Erro no uf do usuário</span>
+                            </div>
+                            <div class="form-group">
+                                <select name="role">
+                                    <option>USER</option>
+                                    <option>ADMIN</option>
+                                    <option>ESTOQ</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
             <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="1536" height="648"

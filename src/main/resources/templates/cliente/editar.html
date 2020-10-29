@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Loja Jokers - Menu</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Montserrat:wght@400;500;600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css}"/>
+</head>
+
+<body>
+<!-- MENU DE NAVEGAÇÃO -->
+<nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
+    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
+        <div>
+            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </div>
+    </form>
+    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;" class="navbar-brand" href="#">Loja
+        Jokers</a>
+    <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span style="background-color: white;" class="navbar-toggler-icon"></span>
+    </button>
+    <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" th:href="@{/principal/menu}">Menu</a>
+            </li>
+            <li class="nav-item" th:if="${role.equals('USER')}">
+                <a id="top" style="color: white;" class="nav-link" th:href="@{/cliente/listar}">Dados Pessoais</a>
+            </li>
+            <li class="nav-item" th:if="${role.equals('ADMIN')}">
+                <a id="top" style="color: white;" class="nav-link" th:href="@{/administrador/listar}">Dados Pessoais</a>
+            </li>
+            <li class="nav-item dropdown" th:if="${role.equals('USER')}">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
+                    Categorias
+                </a>
+                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
+                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
+                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
+                </div>
+            </li>
+            <li id="top" class="nav-item" th:if="${role.equals('USER')}">
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/produtos}">Produtos</a>
+            </li>
+            <li id="top" class="nav-item" th:if="${role.equals('USER')}">
+                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar}">Carrinho</a>
+            </li>
+            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/listar}">Administrador</a>
+            </li>
+            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
+                <a style="color: white;" class="nav-link" th:href="@{/relatorios/listar}">Relatórios</a>
+            </li>
+            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/estoque}">Estoque</a>
+            </li>
+            <li id="top" class="nav-item">
+                <a style="color: white;" class="nav-link" th:href="@{/login?errors=true}">Logar</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!-- MENU DE NAVEGAÇÃO -->
+
+
+<div>
+    </br></br>
+</div>
+<div class="container">
+
+    <form th:action="@{/cliente/editar/{id}(id = ${cliente.id})}" th:object="${cliente}" th:method="post">
+        <input type="hidden" name="_method" value="put"/>
+        <div class="form-group">
+            <div class="form-group">
+                <label>Nome:</label>
+                <input type="text" th:field="*{nome}" class="form-control">
+                <span class="text-danger" th:if="${#fields.hasErrors('nome')}"
+                      th:errors="*{nome}">Erro no nome do cliente</span>
+            </div>
+            <div class="form-group">
+                <label>Cpf:</label>
+                <input type="text" th:field="*{cpf}" class="form-control">
+                <span class="text-danger" th:if="${#fields.hasErrors('cpf')}"
+                      th:errors="*{cpf}">Erro no cpf do cliente</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Proximo</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    </br></br></br>
+</div>
+<footer style="margin-top: 50px;" class="bg-dark text-white">
+    <div class="container py-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <ul class="list-unstyled">
+                    <h4 class="h6">Sobre</h4>
+                    <ul class="list-unstyled text-secondary">
+                        <li>Projeto Integrador 2020</li>
+                        <li>Senac St. Amaro</li>
+                    </ul>
+                    </br>
+                    <ul class="list-unstyled">
+                        <h4 class="h6">Contato</h4>
+                        <ul class="list-unstyled text-secondary">
+                            <li>devs@jokers.com.br</li>
+                            <li>(11) 4002-8922</li>
+                        </ul>
+            </div>
+            <div class="col-md-6">
+
+                <ul class="list-unstyled">
+                    <h4 class="h6">Devs.</h4>
+                    <ul class="list-unstyled text-secondary">
+                        <li>Rafael Louzano</li>
+                        <li>Julio Alcântara</li>
+                        <li>Kaique Ferraz</li>
+                        <li>Sandro</li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bg-primary text-center py-3">
+        <p class="mb-0">JOKERS © 2020. Todos os direitos reservados.</p>
+    </div>
+
+</footer>
+
+<!-- FOOTER - RODAPE-->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+<script>
+    baguetteBox.run('.cards-gallery', {
+        animation: 'slideIn'
+    });
+</script>
+</body>
+
+</html>

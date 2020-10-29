@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Produto;
-import com.example.demo.model.Role;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.example.demo.respository.RolesRepository;
 import com.example.demo.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository repository;
@@ -36,16 +34,27 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAll() {
-         return this.repository.findAll();
+        return this.repository.findAll();
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user, Cliente cliente, String role) {
+        user.setCliente(cliente);
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = this.rolesRepository.findByName(role);
+        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        return this.repository.save(user);
+    }
+
+    @Override
+    public User cadastro(User user, Cliente clientes) {
+        user.setCliente(clientes);
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         Role userRole = this.rolesRepository.findByName("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return this.repository.save(user);
     }
+
     @Override
     public List<User> findAllWhereRoleEquals(Long role_id, Long user_id) {
         return this.userService.findAllWhereRoleEquals(role_id, user_id);
@@ -69,7 +78,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean delete(Long id) {
         User user = findById(id);
-        if(user != null){
+        if (user != null) {
             this.repository.delete(user);
             return true;
         }
@@ -79,11 +88,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean update(Long id, User user) {
         User u = findById(id);
-        if(!u.equals(null)){
+        if (!u.equals(null)) {
             u.setId(user.getId());
-            u.setName(user.getName());
-            u.setEmail(u.getEmail());
-            u.setCpf(user.getCpf());
+            u.setEmail(user.getEmail());
             u.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
             u.setActive(u.getActive());
             this.repository.save(u);
@@ -91,15 +98,25 @@ public class UserServiceImpl implements UserService{
         }
         return false;
     }
-
+    @Override
+    public boolean updatePassord(Long id, User user){
+        User u = findById(id);
+        if (!u.equals(null)) {
+            u.setId(u.getId());
+            u.setEmail(u.getEmail());
+            u.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+            u.setActive(u.getActive());
+            this.repository.save(u);
+            return true;
+        }
+        return false;
+    }
     @Override
     public boolean updateStatus(Long id, User user) {
         User u = findById(id);
-        if(!u.equals(null)){
+        if (!u.equals(null)) {
             u.setId(u.getId());
-            u.setName(u.getName());
             u.setEmail(u.getEmail());
-            u.setCpf(u.getCpf());
             u.setPassword(this.bCryptPasswordEncoder.encode(u.getPassword()));
             u.setActive(user.getActive());
             this.repository.save(u);
@@ -122,15 +139,16 @@ public class UserServiceImpl implements UserService{
         return findById(id);
     }
 
-    private User findById(Long id){
+    private User findById(Long id) {
         return this.repository.getOne(id);
     }
 
     @Override
-    public User cadastroAdmin(User user, String role){
+    public User cadastroAdmin(User user, Cliente cliente, Endereco endereco, String role) {
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         Role userRole = this.rolesRepository.findByName(role);
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setCliente(cliente);
         return this.repository.save(user);
     }
 }

@@ -300,4 +300,35 @@ public class Produto implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", img1='" + img1 + '\'' +
+                ", img2='" + img2 + '\'' +
+                ", img3='" + img3 + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cor='" + cor + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", codigo=" + codigo +
+                ", quantidade=" + quantidade +
+                ", valor=" + valor +
+                ", sexo='" + sexo + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", altura='" + altura + '\'' +
+                ", busto='" + busto + '\'' +
+                ", cintura='" + cintura + '\'' +
+                ", quadril='" + quadril + '\'' +
+                ", tamanho='" + tamanho + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", pergunta1='" + pergunta1 + '\'' +
+                ", pergunta2='" + pergunta2 + '\'' +
+                ", pergunta3='" + pergunta3 + '\'' +
+                ", resposta1='" + resposta1 + '\'' +
+                ", resposta2='" + resposta2 + '\'' +
+                ", resposta3='" + resposta3 + '\'' +
+                ", active=" + active +
+                '}';
+    }
 }

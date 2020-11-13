@@ -5,47 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/animate.css}">
+
+
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Montserrat:wght@400;500;600&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet"
-          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-    <style>
-        body {
-            font-size: 18px;
-        }
-
-        .navbar-header button {
-            color: #fff;
-        }
-
-        .fullsreen {
-            width: 100%;
-        }
-
-        main {
-            padding-top: 50px;
-        }
-
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .tab-pane {
-            padding: 10px 0;
-        }
-    </style>
-
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="css/detalhe.css">
 </head>
-
 <body>
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
@@ -56,7 +25,8 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </div>
     </form>
-    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;" class="navbar-brand" href="#">Loja
+    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
+       class="navbar-brand" href="#">Loja
         Jokers</a>
     <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -68,13 +38,13 @@
         <ul class="navbar-nav ml-auto">
 
             <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/principal/menu}">Menu</a>
+                <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
             <li class="nav-item" th:if="${role.equals('USER')}">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/cliente/listar}">Dados Pessoais</a>
+                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
             <li class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/administrador/listar}">Dados Pessoais</a>
+                <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
             </li>
             <li class="nav-item dropdown" th:if="${role.equals('USER')}">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
@@ -90,149 +60,132 @@
                 </div>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/produtos}">Produtos</a>
+                <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar}">Carrinho</a>
+                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/listar}">Administrador</a>
+                <a style="color: white;" class="nav-link" href="/produtos/listar/">Administrador</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/relatorios/listar}">Relatórios</a>
+                <a style="color: white;" class="nav-link" href="/relatorios/listar/">Relatórios</a>
             </li>
-            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/estoque}">Estoque</a>
+            <li id="top" class="nav-item" th:if="${role.equals('ESTOQ')}">
+                <a style="color: white;" class="nav-link" href="/produtos/estoque/">Estoque</a>
             </li>
             <li id="top" class="nav-item">
-                <a style="color: white;" class="nav-link" th:href="@{/login?errors=true}">Logar</a>
+                <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
             </li>
         </ul>
     </div>
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
 
-<div class="container" style="background-color: white;">
-    <div class="row">
-        <div class="col-sm-4">
-            <form th:action="@{/produtos/detalhes/{id}(id = ${prod.id})}" th:object="${prod}"
-                  th:method="get">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-tittle">Sua Compra</h2>
+
+<div class="container-fluid">
+    <div class="content-wrapper">
+
+        <form th:action="@{/carrinho/adiciona_carrinho/{id}(id = ${prod.id})}" th:object="${prod}"
+              th:method="POST">
+            <div class="item-container">
+                <div class="container">
+                    </br>
+                    <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
+                        <div id="carouselExampleSlidesOnly" style="width: 348px;" class="carousel slide"
+                             data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img th:src="${prod.img1}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img th:src="${prod.img2}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img th:src="${prod.img3}" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <img th:src="${prod.img1}" th:name="img1" class="img-responsive img-thumbnail">
-                        <dl>
-                            <dt>Nome</dt>
-                            <dd th:text="${prod.nome}"></dd>
-
-                            <dt>Cor</dt>
-                            <dd th:text="${prod.cor}"></dd>
-
-                            <dt>Tamanho</dt>
-                            <dd th:text="${prod.tamanho}"></dd>
-
-                            <dt>Preço</dt>
-                            <dd th:text="${prod.valor}"></dd>
-                        </dl>
-
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-8">
-            <form>
-                <fieldset>
-                    <legend>Informações do Usuário</legend>
-                    <div class="form-group">
-                        <img th:src="${prod.img2}" style="width: 170px;margin-top: 29px;"
-                             class="img-responsive img-thumbnail"/>
-                    </div>
-                    <div class="form-group">
-                        <img th:src="${prod.img3}" style="width: 170px; margin-top: -292px;margin-left: 200px;"
-                             class="img-responsive img-thumbnail"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="detalhes">Detalhes:</label>
-                        <div class="input-group">
-                            <textarea id="detalhes" class="form-control" th:text="${prod.descricao}"></textarea>
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="width: 602px;margin-left: 139px;margin-top: -501px;">
+                            <div class="modal-header">
+                                <p style="margin-left: 16px;">Novo | Vendido e entrega pela Jokers</p>
+                            </div>
+                            <label style="margin-left: 30px;">Nome do Produto: </label>
+                            <h3 class="product-title" name="nome"
+                                style="font-variant: all-small-caps;font-style: italic;margin-left: 30px;"
+                                th:text="${prod.nome}"></h3>
+                            <label style="margin-left: 30px;">Código do Produto: </label>
+                            <p class="product-desc" name="codigo" th:text="${prod.codigo}"
+                               style="margin-top: -6px;margin-left: 31px;font-size: 11px;">
+                            </p>
+                            <hr>
+                            <label style="margin-left: 356px;font-style: italic;margin-top: -80px;">Valor do
+                                unitário: </label>
+                            <p style="margin-left: 348px;font-size: 56px;font-style: italic;" class="product-price"
+                               name="valor" th:text="${#numbers.formatCurrency(prod.valor)}"></p>
+                            <label style="margin-left: 30px;margin-top: -91px;font-size: 16px;">Quantidade
+                                Estoque: </label>
+                            <div th:if="${prod.quantidade < 1}">
+                                <p class="product-desc" name="codigo"
+                                   style="margin-top: -6px;margin-left: 31px;font-size: 11px;">Produto Esgotado</p>
+                            </div>
+                            <div th:if="${prod.quantidade > 0}">
+                                <p class="product-desc" name="codigo" th:text="${prod.quantidade}"
+                                   style="margin-top: -6px;margin-left: 31px;font-size: 11px;"></p>
+                            </div>
+                            <hr>
+                            <div>
+                                <form th:action="@{/carrinho/adiciona_carrinho/{id}(id = ${prod.id})}" th:object="${prod}" th:method="POST">
+                                <button style="margin-left: 63px;" type="submit" class="btn btn-success">Adicionar ao
+                                    Carrinho
+                                </button>
+                                </form>
+                            </div>
+                            <div>
+                                <button style="margin-left: 62px;width: 180px;margin-top: 10px;" type="submit"
+                                        class="btn btn-danger">Finalizar Compra
+                                </button>
+                            </div>
+                            </br>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Altura:</label>
-                        <p class="form-control col-md-4" th:text="${prod.altura}">
-                    </div>
+                    <div class="col-md-12 shadow p-3 mb-5 bg-white rounded" style="width: 1107px;margin-top: 92px;">
+                        <ul id="myTab" class="nav nav-tabs nav_tabs">
+                            <li class="active"><a href="#service-one" data-toggle="tab">DETALHES DO PRODUTO</a></li>
+                        </ul>
 
-                    <div class="form-group" style="margin-left: 300px;margin-top: -89px;">
-                        <label>Busto:</label>
-                        <p class="form-control col-md-7" th:text="${prod.busto}">
+                        <section class="nav nav-tabs nav_tabs">
+                            <h1 class="form-control">Teste</h1>
+                            <h1 class="form-control">Teste</h1>
+                            <h1 class="form-control">Teste</h1>
+                            <h1 class="form-control">Teste</h1>
+                            <h1 class="form-control">Teste</h1>
+                            <h1 class="form-control">Teste</h1>
+                        </section>
                     </div>
-
-                    <div class="form-group">
-                        <label>Categoria:</label>
-                        <p class="form-control col-md-4" th:text="${prod.categoria}">
+                    <div class="col-md-12 shadow p-3 mb-5 bg-white rounded" style="width: 1107px;margin-top: 45px;">
+                        <ul id="myTab" class="nav nav-tabs nav_tabs">
+                            <li class="active"><a href="#service-one" data-toggle="tab">PERGUNTAS E RESPOSTAS</a></li>
+                        </ul>
+                        <section class="container product-info">
+                            <li class="form-control" th:text="${prod.descricao}"></li>
+                            <h3 class="form-control" th:text="${prod.pergunta1}"></h3>
+                            <li class="form-control" th:text="${prod.resposta1}"></li>
+                            <h3 class="form-control" th:text="${prod.pergunta2}"></h3>
+                            <li class="form-control" th:text="${prod.resposta2}"></li>
+                            <h3 class="form-control" th:text="${prod.pergunta3}"></h3>
+                            <li class="form-control" th:text="${prod.resposta3}"></li>
+                        </section>
                     </div>
-
-                    <div class="form-group" style="width: 755px; margin-left: 300px;margin-top: -89px;">
-                        <label>Cintura:</label>
-                        <p class="form-control col-md-4" th:text="${prod.cintura}">
-                    </div>
-
-                    <div class="form-group" style="width: 245px;">
-                        <label>Quadril:</label>
-                        <p class="form-control" th:text="${prod.quadril}">
-                    </div>
-
-                    <div class="form-group" style="width: 250px; margin-left: 300px;margin-top: -89px;">
-                        <label>Modelo:</label>
-                        <p class="form-control" th:text="${prod.modelo}">
-                    </div>
-                    <div class="form-group" style="width: 250px; margin-left: 300px;margin-top: -89px;">
-                        <label>Cor:</label>
-                        <p class="form-control" th:text="${prod.cor}">
-                    </div>
-
-                    <div class="form-group" style="width: 244px;">
-                        <label>Codigo:</label>
-                        <p class="form-control" th:text="${prod.codigo}">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="margin-left: 335px;margin-top: -102px;">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                        Adicionar ao Carrinho
-                    </button>
-                    <div class="form-group" style="margin-left: -381px;margin-top: -4px;">
-                        <label>Pergunta 1:</label>
-                        <p class="form-control" th:text="${prod.pergunta1}">
-                    </div>
-                    <div class="form-group" style="margin-left: -381px;margin-top: -4px;">
-                        <label>Resposta 1:</label>
-                        <p class="form-control" th:text="${prod.resposta1}">
-                    </div>
-
-                    <div class="form-group" style="margin-left: -379px;">
-                        <label>Pergunta 2:</label>
-                        <p class="form-control" th:text="${prod.pergunta2}">
-                    </div>
-                    <div class="form-group" style="margin-left: -379px;">
-                        <label>Resposta 2:</label>
-                        <p class="form-control" th:text="${prod.resposta2}">
-                    </div>
-
-                    <div class="form-group" style="margin-left: -379px;">
-                        <label>Pergunta 3:</label>
-                        <p class="form-control" th:text="${prod.pergunta3}">
-                    </div>
-                    <div class="form-group" style="margin-left: -379px;">
-                        <label>Resposta 3:</label>
-                        <p class="form-control" th:text="${prod.resposta3}">
-                    </div>
-            </form>
-        </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
 
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
@@ -274,20 +227,10 @@
 
 <!-- FOOTER - RODAPE-->
 
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-<script>
-    baguetteBox.run('.cards-gallery', {
-        animation: 'slideIn'
-    });
-</script>
+<script th:src="@{/js/detalhe.js}"></script>
+<script>baguetteBox.run('.cards-gallery', {animation: 'slideIn'});</script>
 </body>
 
 </html>

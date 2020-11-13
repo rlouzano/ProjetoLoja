@@ -22,11 +22,11 @@
             </div>
             <div class="text-center" th:if="${param.errors}">
 					<span class="text-danger">
-						Email or password invalid. Try again.
+						Email ou senha errada.
 					</span>
             </div>
             <div class="form-group">
-                <a href="users/new">Criar? Criar conta</a>
+                <a th:href="@{/cliente/new}">Criar? Criar conta</a>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Login</button>

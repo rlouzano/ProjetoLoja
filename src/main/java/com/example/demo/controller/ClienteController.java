@@ -49,27 +49,29 @@ public class ClienteController {
     private User usuario = new User();
 
     @GetMapping("/new")
-    public ModelAndView buscaCadastro(Cliente cliente){
+    public ModelAndView buscaCadastro(Cliente cliente) {
         ModelAndView mv = new ModelAndView("cliente/cadastro");
         return mv;
     }
 
     @PostMapping("/cadastro")
-    public String cadastroCliente(@Valid @ModelAttribute Cliente cliente, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String cadastroCliente(@Valid @ModelAttribute Cliente cliente, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "cliente/cadastro";
         }
         this.clientes = cliente;
         return "redirect:/cliente/endereco";
     }
+
     @GetMapping("/endereco")
-    public ModelAndView buscaEndereco(Endereco endereco){
+    public ModelAndView buscaEndereco(Endereco endereco) {
         ModelAndView mv = new ModelAndView("cliente/cadastroEndereco");
         return mv;
     }
+
     @PostMapping("/endereco")
-    public String cadastroEndereco(@Valid @ModelAttribute Endereco endereco, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String cadastroEndereco(@Valid @ModelAttribute Endereco endereco, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "cliente/cadastroEndereco";
         }
         this.enderecos = endereco;
@@ -78,14 +80,14 @@ public class ClienteController {
 
 
     @GetMapping("/usuario")
-    public ModelAndView buscaUsuario(User user){
+    public ModelAndView buscaUsuario(User user) {
         ModelAndView mv = new ModelAndView("cliente/cadastroUsuario");
         return mv;
     }
 
     @PostMapping("usuario")
-    public String cadastroUsuario(@Valid @ModelAttribute User user, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String cadastroUsuario(@Valid @ModelAttribute User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "cliente/cadastroUsuario";
         }
         this.enderecoService.cadastro(enderecos, clientes, user);
@@ -94,7 +96,7 @@ public class ClienteController {
     }
 
     @GetMapping("/listar")
-    public ModelAndView listarEndereco(Endereco enderecos){
+    public ModelAndView listarEndereco(Endereco enderecos) {
         buscarUsuarioLogado();
         ModelAndView mv = new ModelAndView("cliente/listar");
         Cliente cliente = clienteRepository.findId(usuario.getId());
@@ -106,7 +108,7 @@ public class ClienteController {
     }
 
     @GetMapping("/edit_cliente/{id}")
-    public ModelAndView editarCliente(@PathVariable("id") Long id){
+    public ModelAndView editarCliente(@PathVariable("id") Long id) {
         buscarUsuarioLogado();
         ModelAndView mv = new ModelAndView("cliente/editar");
         Cliente cliente = this.clienteService.listaPorUm(id);
@@ -114,8 +116,9 @@ public class ClienteController {
         mv.addObject("cliente", cliente);
         return mv;
     }
+
     @GetMapping("/edit_endereco/{id}")
-    public ModelAndView listaEndereco(@PathVariable("id") Long id, Endereco endereco){
+    public ModelAndView listaEndereco(@PathVariable("id") Long id, Endereco endereco) {
         buscarUsuarioLogado();
         List<Endereco> enderecos = enderecoRepository.findId(id);
         ModelAndView mv = new ModelAndView("cliente/listarEndereco");
@@ -123,8 +126,9 @@ public class ClienteController {
         mv.addObject("endereco", enderecos);
         return mv;
     }
+
     @GetMapping("/editar_endereco/{id}")
-    public ModelAndView editEndereco(@PathVariable("id") Long id, Endereco endereco){
+    public ModelAndView editEndereco(@PathVariable("id") Long id, Endereco endereco) {
         buscarUsuarioLogado();
         Endereco endereco1 = enderecoService.listaPorUm(id);
         ModelAndView mv = new ModelAndView("cliente/editarEndereco");
@@ -132,21 +136,22 @@ public class ClienteController {
         mv.addObject("endereco", endereco1);
         return mv;
     }
+
     @PutMapping("/editar_endereco/{id}")
-    public ModelAndView editarEndereco(@PathVariable("id") Long id, Endereco enderecos){
+    public ModelAndView editarEndereco(@PathVariable("id") Long id, Endereco enderecos) {
         ModelAndView mv = new ModelAndView("redirect:/cliente/edit_endereco/{id}");
         enderecoService.update(id, enderecos);
         return mv;
     }
+
     @DeleteMapping("/delete_endereco/{id}")
-    public ModelAndView deleteEndereco(@PathVariable("id") Long id, Endereco enderecos){
-        ModelAndView mv = new ModelAndView("redirect:/cliente/edit_endereco/{id}");
+    public String deleteEndereco(@PathVariable("id") Long id, Endereco enderecos) {
         enderecoService.delete(id);
-        return mv;
+        return "redirect:/cliente/edit_endereco/" + usuario.getId();
     }
 
     @GetMapping("/edit_usuario/{id}")
-    public ModelAndView editUsuario(@PathVariable("id") Long id){
+    public ModelAndView editUsuario(@PathVariable("id") Long id) {
         buscarUsuarioLogado();
         User usuario = this.userService.listaPorUm(id);
         ModelAndView mv = new ModelAndView("cliente/editarUsuario");
@@ -156,14 +161,26 @@ public class ClienteController {
     }
 
     @PutMapping("/edit_usuario/{id}")
-    public String editarUsuario(@Valid @PathVariable("id") Long id, User user, BindingResult bindingResult, Model model){
+    public String editarUsuario(@Valid @PathVariable("id") Long id, User user, BindingResult bindingResult, Model model) {
         buscarUsuarioLogado();
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "cliente/editarUsuario";
         }
         model.addAttribute("role", usuario.getRoles().iterator().next().getName());
         this.userService.updatePassord(id, user);
         return "redirect:/cliente/listar";
+    }
+
+    @PutMapping("/edit_cliente/{id}")
+    public String editar_Cliente(@PathVariable("id") Long id, Cliente cliente, BindingResult bindingResult, Model model) {
+        buscarUsuarioLogado();
+        if (bindingResult.hasErrors()) {
+            return "cliente/editar";
+        }
+        clienteService.update(id, cliente);
+        model.addAttribute("role", usuario.getRoles().iterator().next().getName());
+        model.addAttribute("role", usuario.getRoles().iterator().next().getName());
+        return "redirect:/administrador/listar/";
     }
 
 

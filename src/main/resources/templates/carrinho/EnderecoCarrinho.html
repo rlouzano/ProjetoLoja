@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Loja Jokers - Menu</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Montserrat:wght@400;500;600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/carrinho.css}">
+</head>
+
+<body>
+<!-- MENU DE NAVEGAÇÃO -->
+<nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
+    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
+        <div>
+            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </div>
+    </form>
+    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
+       class="navbar-brand" href="#">Loja
+        Jokers</a>
+    <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span style="background-color: white;" class="navbar-toggler-icon"></span>
+    </button>
+    <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
+            </li>
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
+            </li>
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
+                    Categorias
+                </a>
+                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
+                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
+                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
+                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
+                </div>
+            </li>
+            <li id="top" class="nav-item">
+                <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
+            </li>
+            <li id="top" class="nav-item">
+                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
+            </li>
+            <li id="top" class="nav-item">
+                <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!-- MENU DE NAVEGAÇÃO -->
+
+<div class="cart-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shadow p-3 mb-5 bg-white rounded">Endereço de Entrega</div>
+                <form th:action="@{/endereco/busca_endereco}">
+                    <button type="submit" class="btn btn-success">Novo</button>
+                </form>
+                <div class="table-cart">
+                    <table>
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="e : ${endereco}" class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                            <td style="width: 27%;">
+                                <p style="margin-left: 26px;" th:text="${e.tipo}"></p>
+                            </td>
+                            <td style="width: 31%;">
+                                <div th:text="${e.logradouro}"></div>
+                                <div th:text="${e.numero}"></div>
+                                <div style="margin-left: 38px;margin-top: -24px;" th:text="${e.complemento}"></div>
+                                <div th:text="${e.bairro}"></div>
+                                <div th:text="${e.localidade}"></div>
+                                <div style="margin-left: 89px; margin-top: -24px;" th:text="${e.uf}"></div>
+                                <div style="margin-left: 125px;margin-top: -23px;" th:text="${e.cep}"></div>
+                            </td>
+                            <td style="width: 20%;">
+                                <form th:action="@{/cliente/editar_endereco/{id}(id = ${e.id})}">
+                                    <div class="checkbox align-center">
+                                        <button type="submit" class="btn btn-group"
+                                                style="border-radius: 9px;margin-top: 6px;width: 65px;background: white;color: black;border-color: white;">
+                                            <svg width="3em" height="2em" viewBox="0 0 16 16"
+                                                 class="bi bi-arrow-bar-up"
+                                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                      d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td class="align-center" style="width: 100%;">
+                                <form th:action="@{/cliente/delete_endereco/{id}(id = ${e.id})}" th:method="post">
+                                    <input type="hidden" name="_method" value="delete"/>
+                                    <div class="checkbox align-center">
+                                        <button type="submit" class="btn btn-group" style="margin-left: -121px;">
+                                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash"
+                                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                            <td style="width: 0%;">
+                                <form th:action="@{/carrinho/confirma_endereco/{id}(id = ${e.id})}">
+                                    <div class="form-group form-check" style="margin-left: -88px;">
+                                        <button type="submit" class="btn btn-group" style="margin-left: 3px;">
+                                            <svg width="2em" height="2em" viewBox="0 0 16 16"
+                                                 class="bi bi-check-circle-fill" fill="currentColor"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.table-cart -->
+            </div>
+            <!-- /.col-lg-8 -->
+
+            <div class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                <div class="cart-totals">
+                    <form th:action="@{/carrinho/cad_endereco_carrinho/{id}(id = ${cfd.id})}" th:object="${cfd}">
+                        <h3 style="text-align: center;"><strong>Endereço Confirmado</strong></h3>
+                        <table>
+                            <tbody>
+                            <tr class="total-row">
+                                <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                                    <input type="hidden" name="endereco_id" th:value="${cfd.id}"/>
+                                    <p style="text-align: center;" th:text="${cfd.logradouro}"></p>
+                                    <p style="text-align: center;margin-left: 10px;" th:text="${cfd.numero}"></p>
+                                    <p style="text-align: center;margin-top: -41px;margin-left: -136px;"
+                                       th:text="${cfd.localidade}"></p>
+                                    <p th:name="cep" style="text-align: center;margin-top: -39px;margin-left: 165px;"
+                                       th:text="${cfd.cep}"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h3 style="text-align: center;margin-top: 40px;"><strong>Forma Pagamento</strong></h3>
+                        <table>
+                            <tbody>
+                            <tr class="total-row">
+                                <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                                    <input type="hidden" name="cartao_id" th:value="${cartao.id}">
+                                    <p th:name="bandeira" style="text-align: center;"
+                                       th:text="${cartao.bandeira}"></p>
+                                    <p th:name="parcelas" style="text-align: center;"
+                                       th:text="${cartao.parcelas}"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="btn-cart-totals">
+                            <button type="submit" th:href="@{/carrinho/tipo_pagamento}" class="btn btn-success"
+                                    style="width: 300px;padding: 8px;" title="">Forma de Pagamento
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="cart-totals">
+                    <h3 style="text-align: center;"><strong>Total a Pagar</strong></h3>
+                    <table>
+                        <tbody>
+                        <tr class="total-row">
+                            <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                                <p style="text-align: center;margin-left: -70px;"><strong style="text-align: center;">Subtotal</strong>
+                                </p>
+                                <p class="subtotal"
+                                   style="color: #3f3f41;font-size: 15px;text-align: center;margin-left: 92px;margin-top: -40px;"
+                                   th:text="${#numbers.formatCurrency(subtotal)}"></p>
+                                <p style="text-align: center;margin-left: -68px;"><strong>Frete</strong></p>
+                                <p class="free-shipping"
+                                   style="text-align: center;font-size: 15px;    margin-left: 60px;margin-top: -39px;"
+                                   th:text="${#numbers.formatCurrency(frete)}"></p>
+                                <p style="text-align: center;margin-left: -77px;"><strong>Total</strong></p>
+                                <p class="price-total" id="total"
+                                   style="color: #3f3f41;text-align: center;margin-left: 74px;margin-top: -40px;"
+                                   th:text="${#numbers.formatCurrency(total)}"></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- /.btn-cart-totals -->
+                    <!-- /form -->
+                </div>
+                <!-- /.cart-totals -->
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+    </div>
+</div>
+
+<footer style="margin-top: 50px;" class="bg-dark text-white">
+    <div class="container py-4">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <ul class="list-unstyled">
+                    <h4 class="h6">Sobre</h4>
+                    <ul class="list-unstyled text-secondary">
+                        <li>Projeto Integrador 2020</li>
+                        <li>Senac St. Amaro</li>
+                    </ul>
+                    </br>
+                    <ul class="list-unstyled">
+                        <h4 class="h6">Contato</h4>
+                        <ul class="list-unstyled text-secondary">
+                            <li>devs@jokers.com.br</li>
+                            <li>(11) 4002-8922</li>
+                        </ul>
+            </div>
+            <div class="col-md-6">
+
+                <ul class="list-unstyled">
+                    <h4 class="h6">Devs.</h4>
+                    <ul class="list-unstyled text-secondary">
+                        <li>Rafael Louzano</li>
+                        <li>Julio Alcântara</li>
+                        <li>Kaique Ferraz</li>
+                        <li>Sandro</li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bg-primary text-center py-3">
+        <p class="mb-0">JOKERS © 2020. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<!-- FOOTER - RODAPE-->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+<script>
+    baguetteBox.run('.cards-gallery', {
+        animation: 'slideIn'
+    });
+
+    function desconectar() {
+        if (confirm('Deseja desconectar do sistema ?')) {
+            location.href = "/logout";
+        }
+    }
+</script>
+</body>
+</html>

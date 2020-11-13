@@ -1,16 +1,24 @@
 package com.example.demo.model;
 
+import org.hibernate.engine.internal.Cascade;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +40,19 @@ public class User {
     @JoinTable(name = "users_roles",  /*Aqui é um foregn key, onde crio uma tabela com os dois id de cada tabela: User e Role*/
        joinColumns = @JoinColumn(name = "user_id"),
        inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @OneToOne
     @JoinColumn
     private Cliente cliente;
 
+    @OneToOne
+    private Carrinho carrinho;
+
     public User() {
     }
 
-    public User(@Email(message = "Por favor, preencher o email") @NotEmpty(message = "Não pode ser vazio") String email, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5, message = "O password deverá ter 5 digitos") String password, Boolean active, Set<Role> roles, Cliente cliente) {
+    public User(@Email(message = "Email invalido") @NotEmpty(message = "Não pode ser vazio") String email, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5, message = "O password deverá ter 5 digitos") String password, Boolean active, List<Role> roles, Cliente cliente) {
         this.email = email;
         this.password = password;
         this.active = active;
@@ -49,13 +60,26 @@ public class User {
         this.cliente = cliente;
     }
 
-    public User(Long id, @Email(message = "Por favor, preencher o email") @NotEmpty(message = "Não pode ser vazio") String email, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5, message = "O password deverá ter 5 digitos") String password, Boolean active, Set<Role> roles, Cliente cliente) {
+    public User(Long id, @Email(message = "Email invalido") @NotEmpty(message = "Não pode ser vazio") String email, @NotEmpty(message = "Não pode ser vazio") @Length(min = 5, message = "O password deverá ter 5 digitos") String password, Boolean active, List<Role> roles, Cliente cliente) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.active = active;
         this.roles = roles;
         this.cliente = cliente;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Long getId() {
@@ -74,8 +98,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -90,11 +144,11 @@ public class User {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -104,6 +158,14 @@ public class User {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Carrinho getCarrinho() {
+        return carrinho;
+    }
+
+    public void setCarrinho(Carrinho carrinho) {
+        this.carrinho = carrinho;
     }
 
     @Override

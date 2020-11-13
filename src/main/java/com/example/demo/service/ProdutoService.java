@@ -18,6 +18,8 @@ public interface ProdutoService {
 
     public Produto listaPorUm(Integer id);
 
+    public List<Produto> listarTodosId(Integer id);
+
     public boolean excluir(Integer id);
 
     public boolean update(Integer id, Produto produto);

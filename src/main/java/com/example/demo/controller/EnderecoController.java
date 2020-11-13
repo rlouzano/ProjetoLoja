@@ -54,7 +54,7 @@ public class EnderecoController {
         }
         Cliente cliente = clienteRepository.findId(usuario.getId());
         enderecoService.create(endereco, cliente);
-        return "redirect:/cliente/listar";
+        return "redirect:/cliente/edit_endereco/" + usuario.getId();
     }
 
 

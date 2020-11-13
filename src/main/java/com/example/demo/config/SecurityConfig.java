@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.model.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private ImplementsUserDetails userDetails;
 
     @Autowired
     private DataSource dataSource;
@@ -30,24 +33,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/login")
-                .permitAll()
-                .antMatchers("/users/new")
-                .permitAll()
-                .antMatchers("/registration")
-                .permitAll()
-                .antMatchers("/roles/new")
-                .permitAll()
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/principal/menu").permitAll()
+                .antMatchers("/produtos/produtos").permitAll()
                 .antMatchers(HttpMethod.GET, "/cliente/new").permitAll()
                 .antMatchers(HttpMethod.POST, "/cliente/cadastro").permitAll()
                 .antMatchers(HttpMethod.GET, "/cliente/endereco").permitAll()
                 .antMatchers(HttpMethod.POST, "/cliente/endereco").permitAll()
+                .antMatchers(HttpMethod.GET, "/carrinho/listar").permitAll()
                 .antMatchers(HttpMethod.GET, "/cliente/usuario").permitAll()
                 .antMatchers(HttpMethod.POST, "/cliente/usuario").permitAll()
+                .antMatchers(HttpMethod.GET, "/carrinho/carrinho_endereco/").hasAnyAuthority("USER")
                 .antMatchers(HttpMethod.GET, "/produtos/listar").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/roles").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/administrador/view").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/administrador/user").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/administrador/create").hasAnyAuthority("ADMIN")
@@ -59,7 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/administrador/editar").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/administrador/criador").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/administrador/cadastro").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated()
                 .and()
                 .csrf()
                 .disable()
@@ -72,17 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/principal/menu")
+                .logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/denied");
-
-                /*
-                .authorizeRequests()
-                .antMatchers("/login").permitAll()                      //TODOS TEM ACESSO
-                .antMatchers("/registration").permitAll()               //TODOS TEM ACESSO
-                .antMatchers("/**").hasAnyAuthority("ADMIN", "USER")    //AUTORIZADO SOMENTE OS PERFIS CITADOS
-                 */
     }
 
     @Override
@@ -101,10 +92,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
+        // List<User> user = userService.findAll();
+        auth.userDetailsService(userDetails).passwordEncoder(bCryptPasswordEncoder);
+         /* auth.jdbcAuthentication()
                 .usersByUsernameQuery(" select u.email, u.password, u.active from users u where u.email like ? and u.active = 1")
                 .authoritiesByUsernameQuery(" select u.email, r.name from users u inner join users_roles s on u.id = s.user_id inner join roles r on s.role_id like r.id where u.email = ? and u.active = 1")
                 .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);
+                .passwordEncoder(bCryptPasswordEncoder);*/
     }
 }

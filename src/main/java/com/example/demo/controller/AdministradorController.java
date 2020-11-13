@@ -1,13 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.*;
-import com.example.demo.respository.ProdutoCustomRepository;
-import com.example.demo.respository.RolesRepository;
 import com.example.demo.respository.UserRepository;
-import com.example.demo.respository.UsuarioCustomRepository;
+import com.example.demo.respository.querys.ProdutoCustomRepository;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -41,11 +34,23 @@ public class AdministradorController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProdutoCustomRepository produtoCustomRepository;
+
 
     private User usuario = new User();
     private Cliente cliente = new Cliente();
     private Endereco endereco = new Endereco();
 
+    @GetMapping("/pesquisa")
+    public ModelAndView pesquisaProdutoAdm(String info, Produto produto) {
+        buscarUsuarioLogado();
+        ModelAndView mv = new ModelAndView("adm/listar");
+        List<Produto> produtos = produtoCustomRepository.getProdutoPorFiltros(info + "%");
+        mv.addObject("produtos", produtos);
+        mv.addObject("role", usuario.getRoles().iterator().next().getName());
+        return mv;
+    }
 
     /**
      * METODO PARA CHAMAR O CADASTRO DE USUÁRIO COMO ADMINISTRADOR
@@ -56,6 +61,7 @@ public class AdministradorController {
         model.addAttribute("role", usuario.getRoles().iterator().next().getName());
         return "users/cadastro_cliente_adm";
     }
+
 
     @GetMapping("/cadastro_endereco")
     public String CriaEndereco(Endereco endereco, Model model) {
@@ -98,7 +104,7 @@ public class AdministradorController {
             return "users/cadastro_usuario_adm";
         }
         this.enderecoService.cadastro(this.endereco, this.cliente, user);
-        this.userService.create(user,cliente, role);
+        this.userService.create(user, cliente, role);
         return "redirect:/administrador/listar";
     }
 
@@ -132,27 +138,15 @@ public class AdministradorController {
     }
 
 
-    @GetMapping("/edit/{id}")
-    public ModelAndView edit(@PathVariable("id") Long id, User user, Endereco endereco, Cliente cliente, String role) {
-        ModelAndView mv = new ModelAndView("users/editAdmin");
-        User u = userService.listaPorUm(id);
-        Cliente cli = clienteService.listaPorUm(id);
-        Endereco end = enderecoService.listaPorUm(id);
-        mv.addObject("user", u);
-        mv.addObject("cliente", cli);
-        mv.addObject("endereco", end);
-        return mv;
-    }
-
     @PutMapping("/edit/{id}")
     public String Editar(@PathVariable("id") Long id,
                          @Valid @ModelAttribute User user, BindingResult bindingResultU,
-                         @Valid @ModelAttribute Cliente cliente,BindingResult bindingResultC,
+                         @Valid @ModelAttribute Cliente cliente, BindingResult bindingResultC,
                          @Valid @ModelAttribute Endereco endereco, BindingResult bindingResultE, String role) {
         if (bindingResultU.hasErrors() && bindingResultC.hasErrors() && bindingResultE.hasErrors()) {
             return "users/editAdmin";
         }
-        this.clienteService.update(id,cliente);
+        this.clienteService.update(id, cliente);
         this.enderecoService.update(id, endereco);
         this.userService.update(id, user);
         return "redirect:/administrador/listar";

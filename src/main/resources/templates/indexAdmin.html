@@ -37,13 +37,13 @@
         <ul class="navbar-nav ml-auto">
 
             <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/principal/menu}">Menu</a>
+                <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
             <li class="nav-item" th:if="${role.equals('USER')}">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/cliente/listar}">Dados Pessoais</a>
+                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
             <li class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a id="top" style="color: white;" class="nav-link" th:href="@{/administrador/listar}">Dados Pessoais</a>
+                <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
             </li>
             <li class="nav-item dropdown" th:if="${role.equals('USER')}">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
@@ -59,7 +59,7 @@
                 </div>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/produtos}">Produtos</a>
+                <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
                 <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar}">Carrinho</a>
@@ -70,11 +70,11 @@
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a style="color: white;" class="nav-link" th:href="@{/relatorios/listar}">Relatórios</a>
             </li>
-            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/estoque}">Estoque</a>
+            <li id="top" class="nav-item" th:if="${role.equals('ESTOQ')}">
+                <a style="color: white;" class="nav-link" th:href="@{produtos/estoque}">Estoque</a>
             </li>
             <li id="top" class="nav-item">
-                <a style="color: white;" class="nav-link" th:href="@{/login?errors=true}">Logar</a>
+                <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
             </li>
         </ul>
     </div>
@@ -287,7 +287,13 @@
     baguetteBox.run('.cards-gallery', {
         animation: 'slideIn'
     });
+    function desconectar() {
+        if (confirm('Deseja desconectar do sistema ?')) {
+            location.href = "/logout";
+        }
+    }
 </script>
+
 </body>
 
 </html>

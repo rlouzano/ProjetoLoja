@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.infra.FileSever;
-import com.example.demo.model.Cliente;
-import com.example.demo.model.Endereco;
 import com.example.demo.model.Produto;
 import com.example.demo.model.User;
-import com.example.demo.respository.ProdutoCustomRepository;
+import com.example.demo.respository.querys.ProdutoCustomRepository;
 import com.example.demo.respository.UserRepository;
 import com.example.demo.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @Controller
@@ -45,20 +46,20 @@ public class ProdutoController {
         this.fileSever = fileSever;
     }
 
-    @GetMapping(value = "/listar")
+    @GetMapping("/listar")
     public ModelAndView listaAtivo(Produto produto, Model model) {
         buscarUsuarioLogado();
         List<Produto> produtos = produtoCustomRepository.getProdutoAtivo();
         ModelAndView mv = new ModelAndView("adm/listar");
-        mv.addObject("produtos", produtos);
         mv.addObject("role", usuario.getRoles().iterator().next().getName());
+        mv.addObject("produtos", produtos);
         return mv;
     }
 
     /**
      * TELA DE LISTAGEM DE PRODUTO
      */
-    @GetMapping(value = "/produtos")
+    @GetMapping("/produtos")
     public ModelAndView listaProdutos(Produto produto, Model model) {
         buscarUsuarioLogado();
         List<Produto> produtos = produtoCustomRepository.getProdutoAtivo();
@@ -69,7 +70,7 @@ public class ProdutoController {
     }
 
 
-    @GetMapping(value = "/inativo")
+    @GetMapping("/inativo")
     public ModelAndView listaInativo(Produto produto, Model model) {
         buscarUsuarioLogado();
         List<Produto> produtos = produtoCustomRepository.getProdutoInativo();
@@ -82,11 +83,17 @@ public class ProdutoController {
     /*
         DETALHES DO PRODUTO
      */
-    @GetMapping(value = "/detalhes/{id}")
+    @GetMapping("/detalhes/{id}")
     public String produtoDetalhes(@PathVariable("id") Integer id, @ModelAttribute("prod") Produto produto, Model model) {
         buscarUsuarioLogado();
-        model.addAttribute("prod", produtoService.listaPorUm(id));
-        model.addAttribute("role", usuario.getRoles().iterator().next().getName());
+        if(usuario.getId() == null){
+            model.addAttribute("prod", produtoService.listaPorUm(id));
+            model.addAttribute("role", "null");
+        }else{
+            model.addAttribute("role", usuario.getRoles().iterator().next().getName());
+            model.addAttribute("prod", produtoService.listaPorUm(id));
+        }
+
         return "produtos/detalhes";
     }
 
@@ -121,19 +128,14 @@ public class ProdutoController {
         return "redirect:/produtos/confirmar/" + produto.getId();
     }
 
-    @GetMapping("/confirmar/{id}")
-    public ModelAndView confirmaInclusão(@PathVariable("id") Integer id, Produto produto) {
-        ModelAndView mv = new ModelAndView("adm/ok");
-        mv.addObject("prod", produtoService.listaPorUm(id));
-        return mv;
-    }
-
 
     @GetMapping("/edit/{id}")
     public ModelAndView buscarEdit(@PathVariable Integer id) {
+        buscarUsuarioLogado();
         ModelAndView mv = new ModelAndView("produtos/edit");
         Produto prod = produtoService.listaPorUm(id);
         mv.addObject("prod", prod);
+        mv.addObject("role", usuario.getRoles().iterator().next().getName());
         return mv;
     }
 

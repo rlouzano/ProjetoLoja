@@ -41,6 +41,10 @@
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
+
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
+            </li>
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
@@ -178,21 +182,28 @@
                         <table>
                             <tbody>
                             <tr class="total-row">
-                                <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                                <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded" th:if="${cartao != null}">
                                     <input type="hidden" name="cartao_id" th:value="${cartao.id}">
                                     <p th:name="bandeira" style="text-align: center;"
                                        th:text="${cartao.bandeira}"></p>
                                     <p th:name="parcelas" style="text-align: center;"
                                        th:text="${cartao.parcelas}"></p>
+
                                 </td>
+                                <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded" th:if="${cartao == null}">
+                                    <div >
+                                        <input type="hidden" name="cartao_id">
+                                        <p style="text-align: center;">Boleto</p>
+                                        <p style="text-align: center;" th:text="${#numbers.formatCurrency(total)}"></p>
+                                    </div>
+                                </td>
+
                             </tr>
                             </tbody>
                         </table>
-
                         <div class="btn-cart-totals">
-                            <button type="submit" th:href="@{/carrinho/tipo_pagamento}" class="btn btn-success"
-                                    style="width: 300px;padding: 8px;" title="">Forma de Pagamento
-                            </button>
+                            <a th:href="@{/pedidos/finalizar_pedido/{id}(id = ${cfd.id})}" class="btn btn-success"
+                               style="width: 300px;padding: 8px;">Finalizar Venda</a>
                         </div>
                     </form>
                 </div>

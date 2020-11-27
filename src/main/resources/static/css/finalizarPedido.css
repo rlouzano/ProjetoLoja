@@ -1,0 +1,26 @@
+#layout{
+    height: 898px;
+    max-width: 970px;
+    margin-top: -69px;
+}
+
+#titulo_endereco{
+    max-width: 220px;
+    max-height: 91px;
+}
+
+#novo_titulo{
+    width: 205px;
+    height: 106px;
+    max-height: 105px;
+    margin-top: -35px;
+}
+#dados_endereco{
+    width: 207px;
+    margin-top: -39px;
+}
+#dados_carrinho{
+    width: 694px;
+    margin-left: 228px;
+    margin-top: -715px;
+}

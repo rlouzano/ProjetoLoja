@@ -40,7 +40,7 @@
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
             <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/venda/listar">Status Pedidos</a>
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
             </li>
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
@@ -74,25 +74,28 @@
 
 <div class="container">
     <div class="row">
-        <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 1169px;" th:object="${venda}">
-            <ul>
-                <li style="font-size: 50px;" th:text="${vendas}"></li>
-            </ul>
-        </div>
         <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 1169px;text-align: center;">
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
                     <th>Numero Pedido</th>
+                    <th>Data da Compra</th>
                     <th>Valor</th>
                     <th>Status</th>
+                    <th>Detalhes</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="venda : ${v}">
                     <td th:text="${venda.codigo_pedido}"></td>
-                    <td th:text="${venda.valor}"></td>
+                    <td th:text="${#temporals.format(venda.data, 'dd-MM-yyyy HH:mm')}"></td>
+                    <td th:text="${#numbers.formatCurrency(venda.total)}"></td>
                     <td th:text="${venda.status}"></td>
+                    <td>
+                        <form th:action="@{/status/detalhes/{codigo_pedido} (codigo_pedido = ${venda.codigo_pedido})}" th:method="GET">
+                            <button type="submit" class="btn btn-success">Detalhe da Compra</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

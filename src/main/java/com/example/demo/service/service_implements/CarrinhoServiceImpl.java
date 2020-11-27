@@ -40,6 +40,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
         Carrinho cr = findById(id);
         if (!cr.equals(null)) {
             cr.setId(cr.getId());
+            cr.setImg1(cr.getImg1());
             cr.setNome(cr.getNome());
             cr.setCodigo(cr.getCodigo());
             cr.setCodigoProduto(cr.getCodigoProduto());

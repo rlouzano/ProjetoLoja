@@ -41,6 +41,10 @@
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
+
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
+            </li>
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
@@ -76,13 +80,13 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-8" >
+        <div class="col-lg-8">
             <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 814px;margin-left: -99px;">
                 <strong style="text-align: center;">Forma de Pagamento</strong>
             </div>
             <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 390px;margin-left: -98px;">
                 <div class="card border-0 transform-on-hover" style="height: 222px;">
-                    <a class="lightbox" th:href="@{/carrinho/forma_pagamento_cartao}" >
+                    <a class="lightbox" th:href="@{/carrinho/forma_pagamento_cartao}">
                         <img src="http://www.oabdf.org.br/wp-content/uploads/2018/12/bandeiras-300x147.png"
                              class="card-img-top" style="width: 360px;"></a>
                 </div>
@@ -91,9 +95,11 @@
             <div class="card shadow p-3 mb-5 bg-white rounded"
                  style="width: 390px;margin-left: 327px;margin-top: -306px;">
                 <div class="card border-0 transform-on-hover">
-                    <a class="lightbox" th:href="@{/carrinho/forma_pagamento_boleto}" >
-                        <img src="http://solucaosistemas.net/blog/wp-content/uploads/2018/02/icon-pag-boleto.png"
-                             class="card-img-top" style="width: 360px;"></a>
+                    <form th:action="@{/carrinho/cadastro_boleto}" th:method="POST">
+                        <button type="submit" class="lightbox" th:href="@{/carrinho/carrinho_endereco}">
+                            <img src="http://solucaosistemas.net/blog/wp-content/uploads/2018/02/icon-pag-boleto.png"
+                                 class="card-img-top" style="width: 360px;"></button>
+                    </form>
                 </div>
             </div>
         </div>

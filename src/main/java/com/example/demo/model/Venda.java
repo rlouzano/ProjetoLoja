@@ -9,8 +9,9 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String img;
     private Integer codigo;
-    private int codigo_pedido;
+    private Integer codigo_pedido;
     private LocalDateTime data = LocalDateTime.now();
     private Integer quantidade;
     private double valor;
@@ -32,6 +33,7 @@ public class Venda {
     private String uf;
     private String status;
     private String aprovado;
+
     @ManyToOne
     private Cliente cliente;
 
@@ -42,6 +44,18 @@ public class Venda {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setCodigo_pedido(Integer codigo_pedido) {
+        this.codigo_pedido = codigo_pedido;
     }
 
     public String getAprovado() {

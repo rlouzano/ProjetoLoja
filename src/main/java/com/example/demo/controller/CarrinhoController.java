@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.exceptions.TemplateInputException;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -36,7 +37,7 @@ public class CarrinhoController {
     private EnderecoRepository enderecoRepository;
 
     @Autowired
-    private PedidoService pedidoService;
+    private VendaCustomRepository vendaCustomRepository;
 
     @Autowired
     private CarrinhoRepository carrinhoRepository;
@@ -46,9 +47,6 @@ public class CarrinhoController {
 
     @Autowired
     private CartaoRepository cartaoRepository;
-
-    @Autowired
-    private VendaRepository vendaRepository;
 
     @Autowired
     private EnderecoService enderecoService;
@@ -61,6 +59,9 @@ public class CarrinhoController {
 
     @Autowired
     private VendaService vendaService;
+
+    @Autowired
+    private ProdutoCustomRepository produtoCustomRepository;
 
     private User usuario = new User();
 
@@ -160,18 +161,19 @@ public class CarrinhoController {
         return mv;
     }
 
-    @RequestMapping("/cad_endereco_carrinho/{id}")
-    public ModelAndView CadastroEnderecoCarrinho(@PathVariable("id") Long id, Long cartao_id) {
+    @PostMapping("/cadastro_boleto")
+    public ModelAndView cadastroBoleto(){
         buscarUsuarioLogado();
-        Endereco enderecos = this.enderecoService.listaPorUm(id);
-        Cartao cartao1 = this.cartaoService.buscaUm(cartao_id);
-        Venda venda = new Venda();
-        CadastraVenda(enderecos, cartao1);
-        return new ModelAndView("redirect:/carrinho/numero_pedido");
+        Cartao cartao = new Cartao();
+        cartao.setCodigo(" ");
+        cartao.setNomeTitular(usuario.getCliente().getNome());
+        cartao.setParcelas("A Vista");
+        cartao.setNumeroCartao(" ");
+        cartao.setVencimento("00/00/0000");
+        cartao.setBandeira("Boleto");
+        this.cartaoService.create(cartao, usuario.getCliente());
+        return new ModelAndView("redirect:/carrinho/carrinho_endereco");
     }
-
-    @Autowired
-    private ProdutoCustomRepository produtoCustomRepository;
 
     private void AtualizarProduto(Integer codigo) {
         List<Produto> produtos = this.produtoCustomRepository.getProdutoPorCodigo(codigo);
@@ -179,19 +181,6 @@ public class CarrinhoController {
             this.produtoService.update(prod.getId(), prod);
         }
     }
-
-    @GetMapping("/numero_pedido")
-    public ModelAndView numeroPedido(Venda venda) {
-        buscarUsuarioLogado();
-        ModelAndView mv = new ModelAndView("carrinho/numeroPedido");
-        List<Venda> vendas = this.vendaRepository.findByClienteId(usuario.getCliente().getId());
-        System.out.println(vendas.iterator().next().getCodigo_pedido());
-        mv.addObject("vendas", vendas.iterator().next().getCodigo_pedido());
-        return mv;
-    }
-
-    @Autowired
-    private VendaCustomRepository vendaCustomRepository;
 
     @GetMapping("/status")
     public ModelAndView PedidoStatus(Venda venda) {
@@ -215,7 +204,6 @@ public class CarrinhoController {
         this.carrinhoRepository.deleteAll();
     }
 
-
     @PutMapping("/alterar_quantidade/{id}")
     public ModelAndView alterarQuantidade(@PathVariable("id") Integer id, Produto produto) {
         alterarQuantidade(produto, id);
@@ -234,12 +222,11 @@ public class CarrinhoController {
 
     private void alteraProduto(User usuario) {
         List<Carrinho> carrinhos = this.carrinhoCustomRepository.getCarrinhoId(usuario.getId());
-        for (int i = 0; i < carrinhos.size() ; i++) {
+        for (int i = 0; i < carrinhos.size(); i++) {
             List<Produto> produtos = produtoCustomRepository.getProdutoPorCodigo(carrinhos.get(i).getCodigo());
             produtoService.updateQuantidade(produtos.get(i).getId(), produtos.get(i));
         }
     }
-
 
     @PostMapping("/forma_pagamento_boleto")
     public String formaPagamentoBoleto(@Valid @ModelAttribute Cartao cartao, BindingResult bindingResult) {
@@ -256,7 +243,6 @@ public class CarrinhoController {
         return new ModelAndView("");
     }
 
-
     private void alterarQuantidade(Produto produto, Integer id) {
         for (Produto prod : this.produtos) {
             if (prod.getId().equals(id)) {
@@ -264,7 +250,6 @@ public class CarrinhoController {
             }
         }
     }
-
 
     @PutMapping("/alterar_quantidade_logado/{id}")
     public ModelAndView alterarQuantidadeLogado(@PathVariable("id") Long id, int quantidade) {
@@ -275,22 +260,41 @@ public class CarrinhoController {
         return mv;
     }
 
-
     @RequestMapping(value = "/adiciona_carrinho/{id}", method = RequestMethod.POST)
     public String adicionarCarrinho(@PathVariable("id") Integer id) {
-        adicionarEmMemoria(id);
+        Produto produto = produtoService.listaPorUm(id);
+        int aux  = (1+produto.getQuantidade());
+        if (this.produtos.size() == 0) {
+            adicionarEmMemoria(id);
+            return "redirect:/carrinho/listar";
+        }
+
+        for (int i = 0; i < this.produtos.size(); i++) {
+            if (produtos.get(i).getId().equals(id)) {
+                produtos.get(i).setQuantidade(produtos.get(i).getQuantidade()+1);
+                return "redirect:/carrinho/listar";
+            }
+        }
+
+        //   alterarQuantidadeEmMemoria(produto, id, 1);
+        for (Produto produtos : produtos) {
+            if (!produtos.getId().equals(id)) {
+                adicionarEmMemoria(id);
+                return "redirect:/carrinho/listar";
+            }
+        }
         return "redirect:/carrinho/listar";
     }
 
-    private boolean adicionarEmMemoria(Integer id) {
+    private void adicionarEmMemoria(Integer id) {
         Produto produto = produtoService.listaPorUm(id);
         produto.setQuantidade(1);
         this.produtos.add(produto);
-        return true;
     }
 
     @RequestMapping(value = "/remover_carrinho/{id}", method = RequestMethod.POST)
-    public ModelAndView removerCarrinho(@PathVariable("id") Integer id, Produto produto) throws ConcurrentModificationException, TemplateInputException {
+    public ModelAndView removerCarrinho(@PathVariable("id") Integer id, Produto produto) throws
+            ConcurrentModificationException, TemplateInputException {
         ModelAndView mv = new ModelAndView("redirect:/carrinho/listar");
         for (int i = 0; i < this.produtos.size(); i++) {
             if (produtos.get(i).getId().equals(id)) {
@@ -305,7 +309,8 @@ public class CarrinhoController {
     }
 
     @PutMapping(value = "/remover_carrinho_logado/{id}")
-    public ModelAndView removerCarrinhoLogado(@PathVariable("id") Long id, Carrinho carrinho) throws ConcurrentModificationException, TemplateInputException {
+    public ModelAndView removerCarrinhoLogado(@PathVariable("id") Long id, Carrinho carrinho) throws
+            ConcurrentModificationException, TemplateInputException {
         ModelAndView mv = new ModelAndView("redirect:/carrinho/listar");
         carrinhoService.delete(id);
         return mv;

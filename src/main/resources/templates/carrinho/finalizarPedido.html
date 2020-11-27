@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Loja Jokers - Menu</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,6 +13,7 @@
           th:href="@{https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/carrinho.css}">
+    <link rel="stylesheet" th:href="@{/css/finalizarPedido.css}">
 </head>
 
 <body>
@@ -27,8 +27,7 @@
         </div>
     </form>
     <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
-       class="navbar-brand" href="#">Loja
-        Jokers</a>
+       class="navbar-brand" href="#">Loja Jokers</a>
     <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -46,7 +45,7 @@
                 <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
             </li>
             <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
+                <a id="top" style="color: white;" class="nav-link" href="/venda/listar">Status Pedidos</a>
             </li>
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
@@ -78,115 +77,106 @@
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
 
-<div class="cart-wrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
+<div class="container" id="layout">
 
-
-                <div class="table-cart">
-                    <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 726px;">
-                        <strong style="text-align: center;" class="card-text">Cartão de Crédito</strong>
-                    </div>
-                </div>
-
-                <div id="value"></div>
-                <div id="text"></div>
-                <div id="cartao" class="card shadow p-3 mb-5 bg-white rounded">
-                    <form th:action="@{/carrinho/forma_pagamento_cartao}" th:object="${cartao}" th:method="POST">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputEmail4">Nome do Titular</label>
-                                <input type="text" name="nomeTitular" class="form-control" required id="inputEmail4">
-                                <span class="text-danger" th:if="${#fields.hasErrors('nomeTitular')}"
-                                      th:errors="*{nomeTitular}">Erro no nome do Titular do cartão</span>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="inputAddress">Numero do Cartão</label>
-                                <input type="text" name="numeroCartao" class="form-control" required id="inputAddress"
-                                       placeholder="1234.0000.0000.00">
-                                <span class="text-danger" th:if="${#fields.hasErrors('numeroCartao')}"
-                                      th:errors="*{numeroCartao}">Erro no numero do cartão</span>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-5">
-                                <label for="inputCity">Vencimento</label>
-                                <input type="date" name="vencimento" class="form-control" required id="inputCity">
-                                <span class="text-danger" th:if="${#fields.hasErrors('vencimento')}"
-                                      th:errors="*{vencimento}">Erro na data de vencimento do cartão</span>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <label for="inputState">Bandeira do Cartão</label>
-                                <select name="bandeira" class="form-control">
-                                    <option selected>MasterCard</option>
-                                    <option>Visa</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputZip">Codigo</label>
-                                <input type="text" name="codigo" required class="form-control" id="inputZip">
-                                <span class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}">Erro no codigo do cartão</span>
-                            </div>
-
-                            <div class="form-group col-md-2">
-                                <label>Parcelas</label>
-                                <select name="parcelas">
-                                    <option th:text="${'1  X ' + #numbers.formatCurrency(total/1)}"></option>
-                                    <option th:text="${'1  X ' + #numbers.formatCurrency(total/1)}"></option>
-                                    <option th:text="${'2  X ' + #numbers.formatCurrency(total/2)}"></option>
-                                    <option th:text="${'3  X ' + #numbers.formatCurrency(total/3)}"></option>
-                                    <option th:text="${'4  X ' + #numbers.formatCurrency(total/4)}"></option>
-                                    <option th:text="${'5  X ' + #numbers.formatCurrency(total/5)}"></option>
-                                    <option th:text="${'6  X ' + #numbers.formatCurrency(total/6)}"></option>
-                                    <option th:text="${'7  X ' + #numbers.formatCurrency(total/7)}"></option>
-                                    <option th:text="${'8  X ' + #numbers.formatCurrency(total/8)}"></option>
-                                    <option th:text="${'9  X ' + #numbers.formatCurrency(total/9)}"></option>
-                                    <option th:text="${'10 X ' + #numbers.formatCurrency(total/10)}"></option>
-                                    <option th:text="${'11 X ' + #numbers.formatCurrency(total/11)}"></option>
-                                    <option th:text="${'12 X ' + #numbers.formatCurrency(total/12)}"></option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                    </form>
-                </div>
+    <div class="row">
+        <div class="col-lg-8" id="titulo_endereco">
+            <div class="card shadow p-3 mb-5 bg-white rounded" id="novo_titulo">
+                <p>Endereço de Entrega</p>
             </div>
-            <div class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
-                <div class="cart-totals">
-                    <h3>Total a Pagar</h3>
+            <form th:action="@{/pedidos/cadastro_pedido}" th:method="POST">
+                <div class="card shadow p-3 mb-5 bg-white rounded" id="dados_endereco">
+                    <input type="hidden" name="id_endereco" th:value="${endereco.id}"/>
                     <table>
                         <tbody>
                         <tr>
-                            <td>Subtotal</td>
-                            <td class="subtotal" style="color: #3f3f41;font-size: 15px;"
-                                th:text="${#numbers.formatCurrency(subtotal)}"></td>
-                        </tr>
-                        <tr>
-                            <td>Frete</td>
-                            <td class="free-shipping" style="font-size: 15px;"
-                                th:text="${#numbers.formatCurrency(frete)}"></td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total</td>
-                            <td class="price-total" style="color: #3f3f41;"
-                                th:text="${#numbers.formatCurrency(total)}"></td>
+                            <td style="text-align: center;">
+                                <p th:text="${endereco.logradouro} + ' - '+ ${endereco.numero} + ' - '+ ${endereco.bairro}"></p>
+                                <p th:text="${endereco.complemento} + ' - '+  ${endereco.localidade} + ' - '+  ${endereco.uf}"></p>
+                                <p th:text="${endereco.cep}"></p>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
-            </div>
+                <div class="card shadow p-3 mb-5 bg-white rounded" id="novo_titulo">
+                    <p>Dados Pagamento</p>
+                </div>
+                <div th:if="${cartao != null}">
+                    <input type="hidden" name="id_cartao" th:value="${cartao.id}">
+                    <div class="card shadow p-3 mb-5 bg-white rounded" id="dados_endereco">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;">
+                                    <p th:text="${cartao.nomeTitular}"></p>
+                                    <p th:text="${cartao.numeroCartao}"></p>
+                                    <p th:text="${cartao.bandeira}"></p>
+                                    <p th:text="${cartao.codigo}"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card shadow p-3 mb-5 bg-white rounded" id="dados_carrinho" style="margin-top: -607px;">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th style="text-align: center">IMG</th>
+                            <th style="text-align: center">CÓDIGO</th>
+                            <th style="text-align: center">NOME</th>
+                            <th style="text-align: center">QTD</th>
+                            <th style="text-align: center">VALOR</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="c : ${carrinho}">
+                            <td><img style="width: 40px;" th:src="${c.img1}"></td>
+                            <td th:text="${c.codigo}"></td>
+                            <td style="text-align: center" th:text="${c.nome}"></td>
+                            <td style="text-align: center" th:text="${c.quantidade}"></td>
+                            <td style="text-align: center" th:text="${#numbers.formatCurrency(c.valor)}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 694px;margin-left: 229px;">
+                    <table>
+                        <tbody>
+                        <tr class="total-row">
+                            <td class="col-lg-4 shadow p-3 mb-5 bg-white rounded">
+                                <p style="text-align: center;margin-left: -70px;"><strong
+                                        style="text-align: center;">Subtotal</strong>
+                                </p>
+                                <p class="subtotal"
+                                   style="color: #3f3f41;font-size: 15px;text-align: center;margin-left: 92px;margin-top: -40px;"
+                                   th:text="${#numbers.formatCurrency(subtotal)}"></p>
+                                <p style="text-align: center;margin-left: -68px;"><strong>Frete</strong></p>
+                                <p class="free-shipping"
+                                   style="text-align: center;font-size: 15px;    margin-left: 60px;margin-top: -39px;"
+                                   th:text="${#numbers.formatCurrency(frete)}"></p>
+                                <p style="text-align: center;margin-left: -77px;"><strong>Total</strong></p>
+                                <p class="price-total" id="total"
+                                   style="color: #3f3f41;text-align: center;margin-left: 74px;margin-top: -40px;"
+                                   th:text="${#numbers.formatCurrency(total)}"></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button style="height: 43px;margin-top: 20px;" type="submit" class="btn btn-primary" th:attr="onclick='return confirm(\'Deseja finalizar seu pedido  ?\');'">Finalizar
+                        Compra
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
         <div class="row">
-
             <div class="col-md-6">
-
                 <ul class="list-unstyled">
                     <h4 class="h6">Sobre</h4>
                     <ul class="list-unstyled text-secondary">
@@ -240,9 +230,6 @@
             location.href = "/logout";
         }
     }
-
 </script>
-
 </body>
-
 </html>

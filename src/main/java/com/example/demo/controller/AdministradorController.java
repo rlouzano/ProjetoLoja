@@ -105,10 +105,10 @@ public class AdministradorController {
         }
         this.enderecoService.cadastro(this.endereco, this.cliente, user);
         this.userService.create(user, cliente, role);
-        return "redirect:/administrador/listar";
+        return "redirect:/administrador/listar/";
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/listar/")
     public ModelAndView listar(User user, Cliente cliente, Endereco endereco) {
         buscarUsuarioLogado();
         ModelAndView mv = new ModelAndView("users/indexAdmin");
@@ -121,7 +121,7 @@ public class AdministradorController {
 
     @PutMapping("/valida/{id}")
     public ModelAndView validaStatus(@PathVariable("id") Long id, User user) {
-        ModelAndView mv = new ModelAndView("redirect:/administrador/listar");
+        ModelAndView mv = new ModelAndView("redirect:/administrador/listar/");
         this.userService.updateStatus(id, user);
         return mv;
     }
@@ -149,13 +149,13 @@ public class AdministradorController {
         this.clienteService.update(id, cliente);
         this.enderecoService.update(id, endereco);
         this.userService.update(id, user);
-        return "redirect:/administrador/listar";
+        return "redirect:/administrador/listar/";
     }
 
     @PutMapping("/editar/{id}")
     public String EditarRole(@PathVariable("id") Long id, User user, String role) {
         this.userService.editRole(user, id, role);
-        return "redirect:/administrador/listar";
+        return "redirect:/administrador/listar/";
     }
 
     private void buscarUsuarioLogado() {

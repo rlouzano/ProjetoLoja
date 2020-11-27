@@ -16,6 +16,7 @@
 
 <body>
 <!-- MENU DE NAVEGAÇÃO -->
+
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
     <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
         <div>
@@ -37,6 +38,10 @@
 
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
+            </li>
+
+            <li class="nav-item" th:if="${role.equals('USER')}">
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status/">Status Pedidos</a>
             </li>
             <li class="nav-item" th:if="${role.equals('USER')}">
                 <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
@@ -61,16 +66,13 @@
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
+                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar/}">Carrinho</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" href="/produtos/listar/">Administrador</a>
-            </li>
-            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" href="/relatorios/listar/">Relatórios</a>
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/listar/}">Administrador</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ESTOQ')}">
-                <a style="color: white;" class="nav-link" href="/produtos/estoque/">Estoque</a>
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/estoque/}">Estoque</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
@@ -89,10 +91,10 @@
     </form>
     <div style="margin-left: 111px; margin-top: -40px;">
         <button type="submit" class="btn btn-primary btn-sm">
-            <a class="btn btn-primary btn-sm" th:href="@{/administrador/listar}">Ativo</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/administrador/listar/}">Ativo</a>
         </button>
         <button type="submit" class="btn btn-secondary btn-sm">
-            <a class="btn btn-secondary btn-sm" th:href="@{/administrador/inativo}">Inativo</a>
+            <a class="btn btn-secondary btn-sm" th:href="@{/administrador/inativo/}">Inativo</a>
         </button>
     </div>
     </br>

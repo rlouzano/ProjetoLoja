@@ -39,6 +39,10 @@
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
+
+            <li class="nav-item">
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
+            </li>
             <li class="nav-item" th:if="${role.equals('USER')}">
                 <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
@@ -102,7 +106,7 @@
             </div>
         </div>
     </div>
-    <form th:action="@{/administrador/cadastro_usuario}" th:object="${user}" th:method="post">
+    <form th:action="@{/administrador/cadastro_usuario/}" th:object="${user}" th:method="post">
         <div class="form-group">
             <div class="form-group">
                 <label>Email:</label>

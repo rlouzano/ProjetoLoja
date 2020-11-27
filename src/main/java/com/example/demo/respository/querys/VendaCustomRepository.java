@@ -17,9 +17,21 @@ public class VendaCustomRepository {
     private EntityManager em;
 
     public List<Venda> getVendas(Long id) {
-        String jpql = "select v from Venda v inner join Cliente u on v.cliente.id = u.id where u.id = :pId group by v.codigo_pedido";
+        String jpql = "select v from Venda v inner join Cliente u on v.cliente.id = u.id where u.id = :pId group by v.codigo_pedido order by v.data";
         TypedQuery<Venda> query = em.createQuery(jpql, Venda.class);
         query.setParameter("pId", id);
+        return query.getResultList();
+    }
+
+    public List<Venda> getTudo() {
+        String jpql = "select v from Venda v inner join Cliente u on v.cliente.id = u.id group by v.codigo_pedido order by v.data";
+        TypedQuery<Venda> query = em.createQuery(jpql, Venda.class);
+        return query.getResultList();
+    }
+    public List<Venda> getTodos(String status) {
+        String jpql = "select v from Venda v inner join Cliente u on v.cliente.id = u.id where v.status = :status group by v.codigo_pedido order by v.data";
+        TypedQuery<Venda> query = em.createQuery(jpql, Venda.class);
+        query.setParameter("status", status);
         return query.getResultList();
     }
 

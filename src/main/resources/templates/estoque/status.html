@@ -13,9 +13,10 @@
           th:href="@{https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/carrinho.css}">
+    <link rel="stylesheet" th:href="@{/css/finalizarPedido.css}">
 </head>
+<body style="max-width: 1519px;width: 112%;">
 
-<body>
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
     <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
@@ -39,34 +40,8 @@
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
-
-            <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status">Status Pedidos</a>
-            </li>
-            <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
-            </li>
-            <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                    Categorias
-                </a>
-                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
-                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
-                </div>
-            </li>
             <li id="top" class="nav-item">
-                <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
-            </li>
-            <li id="top" class="nav-item">
-                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
+                <a style="color: white;" class="nav-link" href="/produtos/estoque">Estoque</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
@@ -75,23 +50,72 @@
     </div>
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-10">
-            <div class="card shadow p-3 mb-5 bg-white rounded" th:object="${venda}">
-                <h1 style="text-align: center;"><strong>Numero Pedido</strong></h1>
-                <h1 style="color: #1b0cff;text-align: center;"><a th:text="${vendas}" th:href="@{/carrinho/status}"></a></h1>
-            </div>
+<div class="container" style="max-width: 1158px;max-height: 1300px;width: 1098px;">
+    <div class="form-control" style="width: 1099px;height: 56px;text-align: center;">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a class="btn btn-secondary"
+               href="/pedidos/status_pedido?status=Aguardando+Pagamento">Aguardando Pagamento</a>
+            <a class="btn btn-secondary"
+               href="/pedidos/status_pedido?status=Pagamento+Rejeitado">Pagamento Rejeitado</a>
+            <a class="btn btn-secondary"
+               href="/pedidos/status_pedido?status=Pagamento+com+sucesso">Pagamento com sucesso</a>
+            <a class="btn btn-secondary"
+               href="/pedidos/status_pedido?status=Aguardando+Retirada">Aguardando Retirada</a>
+            <a class="btn btn-secondary" href="/pedidos/status_pedido?status=Em+transito">Em
+                transito</a>
+            <a class="btn btn-secondary"
+               href="/pedidos/status_pedido?status=Entregue">Entregue</a>
         </div>
     </div>
+    <table class="table" style="margin-left: 5px;">
+        <thead class="thead-dark" style="font-size: 10px;">
+        <tr>
+            <th style="text-align: center">IMG</th>
+            <th style="text-align: center">QTD</th>
+            <th style="text-align: center">VALOR UNITÁRIO</th>
+            <th style="text-align: center">FRETE</th>
+            <th style="text-align: center">TOTAL A PAGAR</th>
+            <th style="text-align: center">ENDEREÇO</th>
+            <th style="text-align: center">FORMA DE PAGAMENTO</th>
+            <th style="text-align: center">CODIGO PEDIDO</th>
+            <th style="text-align: center">SELECIONAR</th>
+            <th style="text-align: center">STATUS</th>
+        </tr>
+        </thead>
+        <tbody style="font-size: 10px;">
+        <tr th:each="c : ${v}" style="text-align: center;">
+            <td><img style="width: 40px;" th:src="${c.img}"></td>
+            <td style="text-align: center" th:text="${c.quantidade}"></td>
+            <td th:text="${#numbers.formatCurrency(c.valor)}"></td>
+            <td style="text-align: center" th:text="${#numbers.formatCurrency(c.frete)}"></td>
+            <td style="text-align: center" th:text="${#numbers.formatCurrency((c.valor*c.quantidade)+c.frete)}"></td>
+            <td style="text-align: center" th:text="${c.logradouro + ', ' +  c.numero}"></td>
+            <td style="text-align: center" th:text="${c.bandeira}"></td>
+            <td style="text-align: center" th:text="${c.codigo_pedido}"></td>
+            <td style="text-align: center; width: 260px;">
+                <form th:action="@{/pedidos/editar_status/{id}(id = ${c.id})}" th:method="POST">
+                    <input type="hidden" name="_method" value="PUT"/>
+                    <select th:name="codigo_pedido" style="margin-left: 103px;">
+                        <option>Aguardando Pagamento</option>
+                        <option>Pagamento Rejeitado</option>
+                        <option>Pagamento com sucesso</option>
+                        <option>Aguardando Retirada</option>
+                        <option>Em transito</option>
+                        <option>Entregue</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" style="margin-top: -24px;margin-left: -119px;border-radius: 11px;">Editar</button>
+                </form>
+            </td>
+            <td style="text-align: center" th:text="${c.status}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
         <div class="row">
-
             <div class="col-md-6">
-
                 <ul class="list-unstyled">
                     <h4 class="h6">Sobre</h4>
                     <ul class="list-unstyled text-secondary">
@@ -123,11 +147,6 @@
         <p class="mb-0">JOKERS © 2020. Todos os direitos reservados.</p>
     </div>
 </footer>
-
-<!-- FOOTER - RODAPE-->
-
-
-<!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>

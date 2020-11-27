@@ -39,6 +39,10 @@
             <li class="nav-item">
                 <a id="top" style="color: white;" class="nav-link" href="/principal/menu/">Menu</a>
             </li>
+
+            <li class="nav-item" th:if="${role.equals('USER')}">
+                <a id="top" style="color: white;" class="nav-link" href="/carrinho/status/">Status Pedidos</a>
+            </li>
             <li class="nav-item" th:if="${role.equals('USER')}">
                 <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
@@ -62,16 +66,13 @@
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar}">Carrinho</a>
+                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar/}">Carrinho</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/produtos/listar}">Administrador</a>
-            </li>
-            <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
-                <a style="color: white;" class="nav-link" th:href="@{/relatorios/listar}">Relatórios</a>
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/listar/}">Administrador</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ESTOQ')}">
-                <a style="color: white;" class="nav-link" th:href="@{produtos/estoque}">Estoque</a>
+                <a style="color: white;" class="nav-link" th:href="@{/produtos/estoque/}">Estoque</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>

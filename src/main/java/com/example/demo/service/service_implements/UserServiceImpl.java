@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
         Role role1 = new Role();
         role1.setName(role);
         rolesRepository.save(role1);
-        Role userRole = this.rolesRepository.findByName(role);
-        user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
+        //Role userRole = this.rolesRepository.findByName(role);
+        user.setRoles(new ArrayList<Role>(Arrays.asList(role1)));
         return this.repository.save(user);
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         Role role1 = new Role();
         role1.setName("USER");
         rolesRepository.save(role1);
-       // Role userRole = this.rolesRepository.findByName(role1.getName());
+        //Role userRole = this.rolesRepository.findByName(role1.getName());
         user.setRoles(new ArrayList<Role>(Arrays.asList(role1)));
 
         return this.repository.save(user);

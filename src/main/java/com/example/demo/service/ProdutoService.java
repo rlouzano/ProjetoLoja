@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Carrinho;
 import com.example.demo.model.Produto;
+import com.example.demo.model.User;
 import com.example.demo.respository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,7 @@ public interface ProdutoService {
     public boolean update(Integer id, Produto produto);
 
     public boolean updateQuantidade(Integer id, Produto produto);
+
+    public void updateQuant(Integer codigo);
 
 }

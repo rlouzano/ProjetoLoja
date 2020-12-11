@@ -5,6 +5,8 @@ import com.example.demo.model.Cliente;
 import com.example.demo.model.Produto;
 import com.example.demo.model.User;
 import com.example.demo.respository.CarrinhoRepository;
+import com.example.demo.respository.ProdutoRepository;
+import com.example.demo.respository.querys.ProdutoCustomRepository;
 import com.example.demo.service.CarrinhoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +21,66 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     @Autowired
     private CarrinhoRepository carrinhoRepository;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
     @Override
-    public Carrinho adiciona(Produto produto, double frete, User user) {
+    public boolean adiciona(Produto produto, double frete, User user) {
         Carrinho carrinho = new Carrinho();
-        carrinho.setImg1(produto.getImg1());
-        carrinho.setNome(produto.getNome());
-        carrinho.setQuantidade(produto.getQuantidade());
-        carrinho.setCodigo(produto.getCodigo());
-        carrinho.setFrete(frete);
-        carrinho.setValor(produto.getQuantidade() * produto.getValor());
-        carrinho.setTotal((produto.getQuantidade() * produto.getValor())+frete);
-        carrinho.setCodigoProduto(new Random());
-        carrinho.setUser(user);
-        return carrinhoRepository.save(carrinho);
+        List<Carrinho> carrinhos = this.carrinhoRepository.findAll();
+        try {
+            if (!carrinhos.isEmpty()) {
+                for (Carrinho c : carrinhos) {
+                    if (c.getCodigo().equals(produto.getCodigo())) {
+                        System.out.println(c.getCodigo());
+                        c.setId(c.getId());
+                        c.setImg1(c.getImg1());
+                        c.setNome(c.getNome());
+                        c.setQuantidade(c.getQuantidade() + 1);
+                        c.setCodigo(c.getCodigo());
+                        c.setFrete(c.getFrete());
+                        c.setValor(c.getValor());
+                        c.setTotal(c.getQuantidade() * c.getValor());
+                        c.setCodigoProduto(new Random());
+                        c.setUser(c.getUser());
+                        carrinhoRepository.save(c);
+                        return true;
+                    }
+                }
+                for (Carrinho car : carrinhos) {
+                    if (!car.getCodigo().equals(produto.getCodigo())) {
+                        carrinho.setImg1(produto.getImg1());
+                        carrinho.setNome(produto.getNome());
+                        carrinho.setQuantidade(1);
+                        carrinho.setCodigo(produto.getCodigo());
+                        carrinho.setFrete(frete);
+                        carrinho.setValor(produto.getValor());
+                        carrinho.setTotal(produto.getQuantidade() * produto.getValor());
+                        carrinho.setCodigoProduto(new Random());
+                        carrinho.setUser(user);
+                        carrinhoRepository.save(carrinho);
+                        return true;
+                    }
+                }
+            }
+            if (carrinhos.isEmpty()) {
+                carrinho.setImg1(produto.getImg1());
+                carrinho.setNome(produto.getNome());
+                carrinho.setQuantidade(1);
+                carrinho.setCodigo(produto.getCodigo());
+                carrinho.setFrete(frete);
+                carrinho.setValor(produto.getValor());
+                carrinho.setTotal(produto.getQuantidade() * produto.getValor());
+                carrinho.setCodigoProduto(new Random());
+                carrinho.setUser(user);
+                carrinhoRepository.save(carrinho);
+                return true;
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 
@@ -47,7 +96,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
             cr.setImg1(cr.getImg1());
             cr.setQuantidade(carrinho.getQuantidade());
             cr.setValor(cr.getValor());
-            cr.setTotal(cr.getQuantidade()*cr.getValor());
+            cr.setTotal(cr.getQuantidade() * cr.getValor());
             cr.setData(cr.getData());
             this.carrinhoRepository.save(cr);
             return true;

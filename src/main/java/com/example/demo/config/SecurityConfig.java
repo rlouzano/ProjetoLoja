@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -46,10 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/cliente/usuario").permitAll()
                 .antMatchers("/produtos/detalhes/{id}").permitAll()
                 .antMatchers("/carrinho/listar/").permitAll()
+                .antMatchers("/cliente/listar").hasAnyAuthority("USER")
                 .antMatchers(HttpMethod.GET, "/carrinho/carrinho_endereco/").hasAnyAuthority("USER")
                 .antMatchers(HttpMethod.GET, "/produtos/listar").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/roles").hasAnyAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/carrinho/tipo_pagamento").hasAnyAuthority("USER")
+                .antMatchers(HttpMethod.GET, "/carrinho/tipo_pagamento/").hasAnyAuthority("USER")
                 .antMatchers(HttpMethod.GET, "/administrador/view").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/administrador/user").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/administrador/create").hasAnyAuthority("ADMIN")
@@ -66,13 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/principal/menu", true)
+                .defaultSuccessUrl("/principal/menu/", true)
                 .failureUrl("/login?errors=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).invalidateHttpSession(true)
                 .logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling()

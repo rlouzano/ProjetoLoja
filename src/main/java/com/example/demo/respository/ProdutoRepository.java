@@ -11,4 +11,10 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
     List<Produto> findBySexo(String nomeSexo);
 
+    public Produto findByCodigo(Integer codigo);
+
+    public Produto findAllByCodigo(Integer codigo);
+
+
+
 }

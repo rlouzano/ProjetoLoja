@@ -18,13 +18,6 @@
 <body>
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
-    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
-        <div>
-            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </div>
-    </form>
     <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
        class="navbar-brand" href="#">Loja
         Jokers</a>
@@ -46,19 +39,6 @@
             <li class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
             </li>
-            <li class="nav-item dropdown" th:if="${role.equals('USER')}">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                    Categorias
-                </a>
-                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
-                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
-                </div>
-            </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
@@ -72,7 +52,7 @@
                 <a style="color: white;" class="nav-link" href="/relatorios/listar/">Relatórios</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ESTOQ')}">
-                <a style="color: white;" class="nav-link" href="/produtos/estoque/">Estoque</a>
+                <a style="color: white;" class="nav-link" href="/produtos/menu_estoque/">Estoque</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
@@ -179,6 +159,11 @@
     baguetteBox.run('.cards-gallery', {
         animation: 'slideIn'
     });
+    function desconectar() {
+        if (confirm('Deseja desconectar do sistema ?')) {
+            location.href = "/logout";
+        }
+    }
 </script>
 </body>
 

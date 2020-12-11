@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CarrinhoService {
 
-    public Carrinho adiciona(Produto produto, double frete, User user);
+    public boolean adiciona(Produto produto, double frete, User user);
 
     public boolean update(Long id, Carrinho carrinho);
 

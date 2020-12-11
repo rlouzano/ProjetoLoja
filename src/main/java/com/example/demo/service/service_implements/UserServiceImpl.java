@@ -33,12 +33,10 @@ public class UserServiceImpl implements UserService {
         this.rolesRepository = rolesRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
     @Override
     public List<User> findAll() {
         return this.repository.findAll();
     }
-
     @Override
     public User create(User user, Cliente cliente, String role) {
         user.setCliente(cliente);
@@ -50,7 +48,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(new ArrayList<Role>(Arrays.asList(role1)));
         return this.repository.save(user);
     }
-
     @Override
     public User cadastro(User user, Cliente clientes) {
         user.setCliente(clientes);
@@ -60,15 +57,12 @@ public class UserServiceImpl implements UserService {
         rolesRepository.save(role1);
         //Role userRole = this.rolesRepository.findByName(role1.getName());
         user.setRoles(new ArrayList<Role>(Arrays.asList(role1)));
-
         return this.repository.save(user);
     }
-
     @Override
     public List<User> findAllWhereRoleEquals(Long role_id, Long user_id) {
         return this.repository.findAllWhereRoleEquals(role_id, user_id);
     }
-
     @Override
     public User createAdmin(User user, String role) {
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
@@ -76,14 +70,12 @@ public class UserServiceImpl implements UserService {
         user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
         return this.repository.save(user);
     }
-
     @Override
     public User listaPorUm(Long id) {
         User user = repository.getOne(id);
         return user;
 
     }
-
     @Override
     public boolean delete(Long id) {
         User user = findById(id);
@@ -93,7 +85,6 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
     @Override
     public boolean update(Long id, User user) {
         User u = findById(id);
@@ -136,11 +127,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User editRole(User user, Long id, String role) {
-        User user1 = this.repository.getOne(id);
+    public User editRole(Long id, String role) {
+        User user = this.repository.getOne(id);
         Role userRole = this.rolesRepository.findByName(role);
-        user1.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
-        return this.repository.save(user1);
+        user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
+        return this.repository.save(user);
     }
 
     @Override

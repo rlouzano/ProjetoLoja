@@ -16,16 +16,182 @@
     <link rel="stylesheet" th:href="@{/css/finalizarPedido.css}">
 </head>
 
+<style>
+    /*    --------------------------------------------------
+	:: General
+	-------------------------------------------------- */
+    body {
+        font-family: 'Open Sans', sans-serif;
+        color: #353535;
+    }
+
+    .content h1 {
+        text-align: center;
+    }
+
+    .content .content-footer p {
+        color: #6d6d6d;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .content .content-footer p a {
+        color: inherit;
+        font-weight: bold;
+    }
+
+    /*	--------------------------------------------------
+        :: Table Filter
+        -------------------------------------------------- */
+    .panel {
+        border: 1px solid #ddd;
+        background-color: #fcfcfc;
+    }
+
+    .panel .btn-group {
+        margin: 15px 0 30px;
+    }
+
+    .panel .btn-group .btn {
+        transition: background-color .3s ease;
+    }
+
+    .table-filter {
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+    }
+
+    .table-filter tbody tr:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+
+    .table-filter tbody tr td {
+        padding: 10px;
+        vertical-align: middle;
+        border-top-color: #eee;
+    }
+
+    .table-filter tbody tr.selected td {
+        background-color: #eee;
+    }
+
+    .table-filter tr td:first-child {
+        width: 38px;
+    }
+
+    .table-filter tr td:nth-child(2) {
+        width: 35px;
+    }
+
+    .ckbox {
+        position: relative;
+    }
+
+    .ckbox input[type="checkbox"] {
+        opacity: 0;
+    }
+
+    .ckbox label {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .ckbox label:before {
+        content: '';
+        top: 1px;
+        left: 0;
+        width: 18px;
+        height: 18px;
+        display: block;
+        position: absolute;
+        border-radius: 2px;
+        border: 1px solid #bbb;
+        background-color: #fff;
+    }
+
+    .ckbox input[type="checkbox"]:checked + label:before {
+        border-color: #2BBCDE;
+        background-color: #2BBCDE;
+    }
+
+    .ckbox input[type="checkbox"]:checked + label:after {
+        top: 3px;
+        left: 3.5px;
+        content: '\e013';
+        color: #fff;
+        font-size: 11px;
+        font-family: 'Glyphicons Halflings';
+        position: absolute;
+    }
+
+    .table-filter .star {
+        color: #ccc;
+        text-align: center;
+        display: block;
+    }
+
+    .table-filter .star.star-checked {
+        color: #F0AD4E;
+    }
+
+    .table-filter .star:hover {
+        color: #ccc;
+    }
+
+    .table-filter .star.star-checked:hover {
+        color: #F0AD4E;
+    }
+
+    .table-filter .media-photo {
+        width: 35px;
+    }
+
+    .table-filter .media-body {
+        display: block;
+        /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+    }
+
+    .table-filter .media-meta {
+        font-size: 11px;
+        color: #999;
+    }
+
+    .table-filter .media .title {
+        color: #2BBCDE;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: normal;
+        margin: 0;
+    }
+
+    .table-filter .media .title span {
+        font-size: .8em;
+        margin-right: 20px;
+    }
+
+    .table-filter .media .title span.pagado {
+        color: #5cb85c;
+    }
+
+    .table-filter .media .title span.pendiente {
+        color: #f0ad4e;
+    }
+
+    .table-filter .media .title span.cancelado {
+        color: #d9534f;
+    }
+
+    .table-filter .media .summary {
+        font-size: 14px;
+    }
+</style>
+
 <body>
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
-    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
-        <div>
-            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </div>
-    </form>
     <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
        class="navbar-brand" href="#">Loja Jokers</a>
     <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -33,6 +199,21 @@
             aria-label="Toggle navigation">
         <span style="background-color: white;" class="navbar-toggler-icon"></span>
     </button>
+    <div id="top" class="nav-item">
+        <form th:action="@{/carrinho/listar/}" th:method="GET">
+            <button type="submit" class="btn btn-outline-secondary" style="color: white;"> + <span
+                    th:text="${car}"></span>
+                <svg width="2em" height="2em" color="white" viewBox="0 0 16 16" class="bi bi-cart-check"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    <path fill-rule="evenodd"
+                          d="M11.354 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
     <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
@@ -45,26 +226,10 @@
                 <a id="top" style="color: white;" class="nav-link" href="/carrinho/status/">Status Pedidos</a>
             </li>
             <li class="nav-item">
-                <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                    Categorias
-                </a>
-                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
-                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
-                </div>
+                <a id="top" style="color: white;" class="nav-link" href="/cliente/listar/">Dados Pessoais</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
-            </li>
-            <li id="top" class="nav-item">
-                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
             </li>
             <li id="top" class="nav-item">
                 <a style="color: white;" class="nav-link" href="javascript:desconectar();"><strong>Desconectar</strong></a>
@@ -74,32 +239,101 @@
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
 
-<div class="container" >
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th style="text-align: center">IMG</th>
-                <th style="text-align: center">QTD</th>
-                <th style="text-align: center">VALOR UNITÁRIO</th>
-                <th style="text-align: center">FRETE</th>
-                <th style="text-align: center">TOTAL A PAGAR</th>
-                <th style="text-align: center">ENDEREÇO</th>
-                <th style="text-align: center">FORM DE PAGAMENTO</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="c : ${venda}" style="text-align: center;">
-                <td><img style="width: 40px;" th:src="${c.img}"></td>
-                <td style="text-align: center" th:text="${c.quantidade}"></td>
-                <td th:text="${#numbers.formatCurrency(c.valor)}"></td>
-                <td style="text-align: center" th:text="${#numbers.formatCurrency(c.frete)}"></td>
-                <td style="text-align: center" th:text="${#numbers.formatCurrency((c.valor*c.quantidade)+c.frete)}"></td>
-                <td style="text-align: center" th:text="${c.logradouro + ', ' +  c.numero}"></td>
-                <td style="text-align: center" th:text="${c.bandeira}"></td>
-            </tr>
-            </tbody>
-        </table>
+<div class="card shadow p-3 mb-5 bg-white rounded text-center" style="height: 68px;">
+    <h1>STATUS PEDIDOS</h1>
+</div>
+<div class="cart-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="table table-filter">
+                    <div class="media">
+                        <h3 style="font-size: 26px;">Endereço de Entrega</h3>
+                        <div style="margin-left: -335px;margin-top: 36px;">
+                            <div>
+                            <span class="subtotal" style="color: #3f3f41;font-size: 15px;"
+                                  th:text="${endereco}"></span>
+                            </div>
+                            <div>
+                            <span class="subtotal" style="color: #3f3f41;font-size: 15px;"
+                                  th:text="${endereco1}"></span>
+                            </div>
+                            <div>
+                            <span class="subtotal" style="color: #3f3f41;font-size: 15px;"
+                                  th:text="${endereco2}"></span>
+                            </div>
+                            <div>
+                            <span class="subtotal" style="color: #3f3f41;font-size: 15px;"
+                                  th:text="${endereco3}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-filter">
+                    <tbody>
+                    <tr data-status="pagado" th:each="venda : ${venda}">
+                        <td>
+                            <div class="media">
+                                <a href="#" class="pull-left">
+                                    <img style="width: 149px;" th:src="${venda.img}"
+                                         class="media-photo">
+                                </a>
+                                <div class="media-body" style="margin-left: 117px;">
+                                            <span class="media-meta pull-right"
+                                                  th:text="${#temporals.format(venda.data, 'dd-MM-yyyy HH:mm')}"></span>
+                                    <h4 class="title"> Numero do Pedido:<span
+                                            class="pull-right pagado"
+                                            th:text="${venda.codigo_pedido}"></span>
+                                    </h4>
+                                    Valor Unitário
+                                    <p class="summary"
+                                       th:text="${#numbers.formatCurrency(venda.valor)}"></p>
+                                    Total
+                                    <p class="summary"
+                                       th:text="${#numbers.formatCurrency(venda.total)}"></p>
+                                    <p class="summary" th:text="${venda.status}"></p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4 shadow p-3 mb-7 bg-white rounded">
+                <div class="cart-totals">
+                    <h3 style="text-align: center">Dados da Compra</h3>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Pagamento</td>
+                            <td class="free-shipping" style="font-size: 15px;"
+                                th:text="${bandeira}"></td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td class="subtotal" style="color: #3f3f41;font-size: 15px;"
+                                th:text="${#numbers.formatCurrency(valor)}"></td>
+                        </tr>
+                        <tr>
+                            <td>Frete</td>
+                            <td class="free-shipping" style="font-size: 15px;"
+                                th:text="${#numbers.formatCurrency(frete)}"></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total</td>
+                            <td class="price-total" style="color: #3f3f41;"
+                                th:text="${#numbers.formatCurrency(total)}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
         <div class="row">

@@ -32,7 +32,21 @@
             aria-label="Toggle navigation">
         <span style="background-color: white;" class="navbar-toggler-icon"></span>
     </button>
-    <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div id="top" class="nav-item" th:if="${role.equals('USER')}">
+        <form th:action="@{/carrinho/listar/}" th:method="GET">
+            <button type="submit" class="btn btn-outline-secondary" style="color: white;"> + <span th:text="${car}"></span>
+                <svg width="2em" height="2em" color="white" viewBox="0 0 16 16" class="bi bi-cart-check"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    <path fill-rule="evenodd"
+                          d="M11.354 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+        <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
 
@@ -65,9 +79,6 @@
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
             </li>
-            <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
-            </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a style="color: white;" class="nav-link" href="/produtos/listar/">Administrador</a>
             </li>
@@ -84,147 +95,199 @@
     </div>
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
-<div style="background-color: white;">
+<div class="shadow p-3 mb-5 bg-white rounded">
+    <div style="background-color: white;">
 
-    <form th:action="@{/produtos/edit/{id}(id = ${prod.id})}" th:object="${prod}" th:method="POST"
-          enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="PUT"/>
-        </br></br>
-        <div class="container">
-            <div class="rounded float-left" style="width: 275px;">
-                <div class="form-control-plaintext">
-                    <img class="bd-placeholder-img card-img-top" name="img1" th:src="*{img1}"
-                         th:field="*{img1}"
-                         style="width: 100%; height: 225; "/>
+        <form th:action="@{/produtos/edit/{id}(id = ${prod.id})}" th:object="${prod}" th:method="POST"
+              enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="PUT"/>
+            <div class="cart-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="col-lg-12 shadow p-4 mb-5 bg-white rounded">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Nome:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{nome}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Valor:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{valor}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Descrição:</label>
+                                        <div class="col-sm-12">
+                                        <textarea class="form-control col-12" rows="5" id="comment"
+                                                  th:field="*{descricao}"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Quantidade:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{quantidade}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Genero:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{sexo}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" >Modelo:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{modelo}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" >Altura:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{altura}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Busto:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{busto}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" >Cintura:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{cintura}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" >Quadril:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{quadril}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Tamanho:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{tamanho}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Categoria:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{categoria}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Pergunta 1:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control col-12" th:field="*{pergunta1}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Resposta 1 </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control col-12" type="text" name="pergunta2"
+                                                   th:field="*{resposta1}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Pergunta 2 </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control col-12" type="text" name="pergunta2"
+                                                   th:field="*{pergunta2}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Resposta 2 </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control col-12" type="text" name="pergunta2"
+                                                   th:field="*{resposta2}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Pergunta 3 </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control col-12" type="text" name="pergunta3"
+                                                   th:field="*{pergunta3}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Resposta 3 </label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control col-12" type="text" name="pergunta3"
+                                                   th:field="*{resposta3}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 shadow p-4 mb-5 bg-white rounded">
+                            <div class="cart-totals">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="product-swap-image"><img
+                                                    class="img-fluid product-swap-image-front"
+                                                    th:src="*{img1}" alt="product"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="product-swap-image"><img
+                                                    class="img-fluid product-swap-image-front"
+                                                    th:src="*{img2}" alt="product"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td>
+                                            <div class="product-swap-image"><img
+                                                    class="img-fluid product-swap-image-front"
+                                                    th:src="*{img3}" alt="product"></div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td>
+                                            <div class="col-lg-12 shadow p-3 mb-5 bg-white rounded" style="margin-top: 18px;">
+                                                <div class="form-group">
+                                                    <label class="custom-control custom-checkbox">STATUS DO
+                                                        PRODUTO</label>
+                                                    <input type="checkbox" style="margin-left: 27px;"
+                                                           th:field="*{active}"
+                                                           class="form-check-input"/>
+                                                    <span class="form-check-input"></span>
+                                                    <span class="custom-control-description" style="margin-left: 49px;">Active?</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="btn-cart-totals" style="margin-top: -47px;">
+                                    <button class="btn btn-success"
+                                            style="width: 348px;padding: 9px; margin-top: 27px;">Salvar
+                                    </button>
+                                </div>
+                                <!-- /.btn-cart-totals -->
+                                <!-- /form -->
+                            </div>
+                            <!-- /.cart-totals -->
+                        </div>
+                        <!-- /.col-lg-4 -->
+                    </div>
                 </div>
-                <div class="form-control-plaintext">
-                    <img class="bd-placeholder-img card-img-top" name="img2" th:src="*{img2}"
-                         th:field="*{img2}"
-                         style="width: 100%; height: 225;margin-top: -331px; margin-left: 300px;"/>
-                </div>
-                <div class="form-control-plaintext">
-                    <img class="bd-placeholder-img card-img-top" name="img3" th:src="*{img3}"
-                         th:field="*{img3}"
-                         style="width: 100%; height: 225;margin-left: 600px; margin-top: -407px;"/>
-                </div>
-                </br>
             </div>
-        </div>
-
-        <div class="container" style="margin-top: -142px;">
-            <div class="form-group">
-                <label style="margin-left: -275px; margin-top: 500px;">Nome:</label>
-                <input class="form-control" style="width: 95%;" type="text" name="nome" th:field="*{nome}"/>
-            </div>
-            <div class="form-group">
-                <label>Valor: </label>
-                <input type="text" class="form-control" name="valor" style="width: 95%;"
-                       th:field="*{valor}"/>
-            </div>
-            <div class="form-group">
-                <label>Quantidade: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="quantidade"
-                       th:field="*{quantidade}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Sexo: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="sexo"
-                       th:field="*{sexo}"/>
-            </div>
-            </br>
-            <div class="form-group">
-                <label>Modelo: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="modelo"
-                       th:field="*{modelo}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Cor: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="cor"
-                       th:field="*{cor}"/>
-            </div>
-            <div class="form-group">
-                <label>Descrição: </label>
-                <textarea class="form-control" name="descricao" style="width: 95%;"
-                          th:field="*{descricao}"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Altura: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="altura"
-                       th:field="*{altura}"/>
-            </div>
-            <div class="form-group">
-                <label>Busto: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="busto"
-                       th:field="*{busto}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Cintura: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="cintura"
-                       th:field="*{cintura}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Quadril: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="quadril"
-                       th:field="*{quadril}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Tamanho: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="tamanho"
-                       th:field="*{tamanho}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Categoria: </label>
-                <input class="form-control" style="width: 95%;" type="text" name="categoria"
-                       th:field="*{categoria}"/>
-            </div>
-            <div class="form-group">
-                <label>Pergunta 1 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta1"
-                       th:field="*{pergunta1}"/>
-            </div>
-            <div class="form-group">
-                <label>Resposta 1 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta2"
-                       th:field="*{resposta1}"/>
-            </div>
-            <div class="form-group">
-                <label>Pergunta 2 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta2"
-                       th:field="*{pergunta2}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Resposta 2 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta2"
-                       th:field="*{resposta2}"/>
-            </div>
-            <div class="form-group">
-                <label>Pergunta 3 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta3"
-                       th:field="*{pergunta3}"/>
-            </div>
-
-            <div class="form-group">
-                <label>Resposta 3 </label>
-                <input class="form-control" style="width: 95%;" type="text" name="pergunta3"
-                       th:field="*{resposta3}"/>
-            </div>
-            <div class="form-group">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" th:field="*{active}" class="form-check-input"/>
-                    <span class="form-check-input"></span>
-                    <span class="custom-control-description">Active?</span>
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
@@ -279,6 +342,11 @@
     baguetteBox.run('.cards-gallery', {
         animation: 'slideIn'
     });
+    function desconectar() {
+        if (confirm('Deseja desconectar do sistema ?')) {
+            location.href = "/logout";
+        }
+    }
 </script>
 </body>
 

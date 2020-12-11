@@ -1,7 +1,6 @@
 #layout{
-    height: 898px;
-    max-width: 970px;
-    margin-top: -69px;
+    height: 893px;
+    max-width: 924px;
 }
 
 #titulo_endereco{
@@ -17,10 +16,10 @@
 }
 #dados_endereco{
     width: 207px;
-    margin-top: -39px;
+    margin-top: 5px;
 }
 #dados_carrinho{
     width: 694px;
     margin-left: 228px;
-    margin-top: -715px;
+
 }

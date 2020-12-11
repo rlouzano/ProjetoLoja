@@ -3,6 +3,7 @@ package com.example.demo.service.service_implements;
 import com.example.demo.model.*;
 import com.example.demo.respository.CartaoRepository;
 import com.example.demo.respository.PedidoRepository;
+import com.example.demo.respository.ProdutoRepository;
 import com.example.demo.respository.VendaRepository;
 import com.example.demo.respository.querys.ProdutoCustomRepository;
 import com.example.demo.respository.querys.VendaCustomRepository;
@@ -25,6 +26,9 @@ public class VendaServiceImpl implements VendaService {
 
     @Autowired
     private ProdutoService produtoService;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @Override
     public void create(Venda venda, User usuario, Cartao cartao, Endereco enderecos, List<Carrinho> carrinhos) {
@@ -59,7 +63,6 @@ public class VendaServiceImpl implements VendaService {
     }
 
 
-
     @Override
     public void update(Long id, String status) {
         Venda venda = new Venda();
@@ -91,7 +94,8 @@ public class VendaServiceImpl implements VendaService {
             this.repository.save(venda);
         }
     }
-    private Venda findById(Long id){
+
+    private Venda findById(Long id) {
         return this.repository.getOne(id);
     }
 

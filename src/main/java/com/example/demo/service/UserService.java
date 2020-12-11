@@ -30,7 +30,7 @@ public interface UserService {
 
     public User listaPorUm(Long id);
 
-    public User editRole(User user, Long id, String role);
+    public User editRole(Long id, String role);
 
     public List<User> findAllWhereRoleEquals(Long role_id, Long user_id);
 

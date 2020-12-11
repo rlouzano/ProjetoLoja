@@ -17,21 +17,29 @@
 <body>
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
-    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
-        <div>
-            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </div>
-    </form>
-    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;" class="navbar-brand" href="#">Loja
+    <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
+       class="navbar-brand" href="#">Loja
         Jokers</a>
     <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
         <span style="background-color: white;" class="navbar-toggler-icon"></span>
     </button>
-    <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div id="top" class="nav-item" th:if="${role.equals('USER')}">
+        <form th:action="@{/carrinho/listar/}" th:method="GET">
+            <button type="submit" class="btn btn-outline-secondary" style="color: white;"> + <span th:text="${car}"></span>
+                <svg width="2em" height="2em" color="white" viewBox="0 0 16 16" class="bi bi-cart-check"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    <path fill-rule="evenodd"
+                          d="M11.354 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+        <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
 
@@ -48,24 +56,8 @@
             <li class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
             </li>
-            <li class="nav-item dropdown" th:if="${role.equals('USER')}">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                    Categorias
-                </a>
-                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
-                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
-                </div>
-            </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
-            </li>
-            <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" th:href="@{/carrinho/listar/}">Carrinho</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a style="color: white;" class="nav-link" th:href="@{/produtos/listar/}">Administrador</a>
@@ -81,48 +73,54 @@
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
 
-
+</br>
 <div class="container">
-    <div style="background-color: white;">
-        </br></br>
-        <form th:action="@{/produtos/create}" method="get">
-            <button style="margin-left: 28px;" class="btn btn-primary" type="submit">Adicionar</button>
-        </form>
-        <div style="margin-left: 28px;margin-top: 20px;">
-            <button type="submit" class="btn btn-primary btn-sm"><a class="btn btn-primary btn-sm" href="/produtos/listar/">Ativo</a></button>
-            <button type="submit" class="btn btn-secondary btn-sm"><a class="btn btn-secondary btn-sm" href="/produtos/inativo/">Inativo</a></button>
+
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <div style="background-color: white;">
+            </br></br>
+            <form th:action="@{/produtos/create}" method="get">
+                <button style="margin-left: 28px;" class="btn btn-primary" type="submit">Adicionar</button>
+            </form>
+            <div style="margin-left: 28px;margin-top: 20px;">
+                <button type="submit" class="btn btn-primary btn-sm"><a class="btn btn-primary btn-sm"
+                                                                        href="/produtos/listar/">Ativo</a></button>
+                <button type="submit" class="btn btn-secondary btn-sm"><a class="btn btn-secondary btn-sm"
+                                                                          href="/produtos/inativo/">Inativo</a></button>
+            </div>
         </div>
-        <hr>
-        <div class="album py-5 bg-light">
+    </div>
+    <hr>
+    <div class="album py-5 bg-light">
 
-            <div class="row">
+        <div class="row">
 
-                <div class="col-md-3 img-fluid" th:each="produto : ${produtos}">
-                    <div>
-                        <img th:src="${produto.img1}" alt="..." class="img-thumbnail"/>
-                        <p class="card-text" th:text="${produto.nome}"></p>
-                        <a class="btn btn-primary btn-sm"
-                           th:href="@{/produtos/edit/{id}(id = ${produto.id})}">Editar</a></button>
-                        <small class="text-muted" style="margin-left: 167px;"
-                               th:text="${produto.valor}"></small>
-                        <form th:action="@{/produtos/detalhes/{id}(id = ${produto.id})}"
-                              th:method="GET">
-                            <button type="submit" style="
+            <div class="col-md-3 img-fluid" th:each="produto : ${produtos}">
+                <div>
+                    <img th:src="${produto.img1}" alt="..." class="img-thumbnail"/>
+                    <p class="card-text" th:text="${produto.nome}"></p>
+                    <a class="btn btn-primary btn-sm"
+                       th:href="@{/produtos/edit/{id}(id = ${produto.id})}">Editar</a></button>
+                    <small class="text-muted" style="margin-left: 167px;"
+                           th:text="${#numbers.formatCurrency(produto.valor)}"></small>
+                    <form th:action="@{/administrador/detalhes/{id}(id = ${produto.id})}"
+                          th:method="GET">
+                        <button type="submit" style="
                                         padding: 0px;
                                         width: 55px;
                                             margin-top: 5px;
                                         padding: 3px;
                                         font-size: 16px;
                                         font-style: oblique;"
-                                    class="btn btn-secondary btn-sm" tabindex="-1"
-                                    role="button" aria-disabled="true">Ver
-                            </button>
-                        </form>
-                    </div>
+                                class="btn btn-secondary btn-sm" tabindex="-1"
+                                role="button" aria-disabled="true">Ver
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- FOOTER - RODAPE-->
@@ -184,6 +182,11 @@
     baguetteBox.run('.cards-gallery', {
         animation: 'slideIn'
     });
+    function desconectar() {
+        if (confirm('Deseja desconectar do sistema ?')) {
+            location.href = "/logout";
+        }
+    }
 </script>
 </body>
 </html>

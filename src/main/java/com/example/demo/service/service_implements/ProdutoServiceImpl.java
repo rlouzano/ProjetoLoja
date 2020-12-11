@@ -1,8 +1,11 @@
 package com.example.demo.service.service_implements;
 
 import com.example.demo.infra.FileSever;
+import com.example.demo.model.Carrinho;
 import com.example.demo.model.Produto;
+import com.example.demo.model.User;
 import com.example.demo.respository.ProdutoRepository;
+import com.example.demo.respository.querys.CarrinhoCustomRepository;
 import com.example.demo.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
@@ -33,12 +37,16 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public boolean adicionar(Produto produto) {
+        Random r = new Random();
+        if (r.nextInt() > 0) {
+            produto.setCodigo(r.nextInt());
+        }
         produtoRepository.save(produto);
         return true;
     }
 
     @Override
-    public List<Produto> listarTodosId(Integer id){
+    public List<Produto> listarTodosId(Integer id) {
         Produto produto = produtoRepository.getOne(id);
         List<Produto> prod = new ArrayList<>(Arrays.asList(produto));
         return prod;
@@ -94,6 +102,41 @@ public class ProdutoServiceImpl implements ProdutoService {
         }
         return false;
     }
+
+    @Autowired
+    private CarrinhoCustomRepository carrinhoCustomRepository;
+
+    @Override
+    public void updateQuant(Integer codigo) {
+        Produto prod = this.produtoRepository.findAllByCodigo(codigo);
+        if (!prod.equals(null)) {
+            prod.setQuantidade(prod.getQuantidade());
+            prod.setId(prod.getId());
+            prod.setImg1(prod.getImg1());
+            prod.setImg2(prod.getImg2());
+            prod.setImg3(prod.getImg3());
+            prod.setNome(prod.getNome());
+            prod.setValor(prod.getValor());
+            prod.setModelo(prod.getModelo());
+            prod.setDescricao(prod.getDescricao());
+            prod.setAltura(prod.getAltura());
+            prod.setBusto(prod.getBusto());
+            prod.setCintura(prod.getCintura());
+            prod.setQuadril(prod.getQuadril());
+            prod.setTamanho(prod.getTamanho());
+            prod.setCor(prod.getCor());
+            prod.setCategoria(prod.getCategoria());
+            prod.setPergunta1(prod.getPergunta1());
+            prod.setResposta1(prod.getResposta1());
+            prod.setPergunta2(prod.getPergunta2());
+            prod.setResposta2(prod.getResposta2());
+            prod.setPergunta3(prod.getPergunta3());
+            prod.setResposta3(prod.getResposta3());
+            prod.setActive(prod.isActive());
+            this.produtoRepository.save(prod);
+        }
+    }
+
 
     @Override
     public boolean updateQuantidade(Integer id, Produto produto) {

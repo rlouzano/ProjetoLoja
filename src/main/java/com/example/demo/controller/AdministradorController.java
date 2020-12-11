@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.*;
+import com.example.demo.respository.RolesRepository;
 import com.example.demo.respository.UserRepository;
 import com.example.demo.respository.querys.ProdutoCustomRepository;
 import com.example.demo.service.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,8 +37,10 @@ public class AdministradorController {
     private UserService userService;
 
     @Autowired
-    private ProdutoCustomRepository produtoCustomRepository;
+    private ProdutoService produtoService;
 
+    @Autowired
+    private ProdutoCustomRepository produtoCustomRepository;
 
     private User usuario = new User();
     private Cliente cliente = new Cliente();
@@ -103,9 +107,14 @@ public class AdministradorController {
         if (bindingResultCli.hasFieldErrors()) {
             return "users/cadastro_usuario_adm";
         }
-        this.enderecoService.cadastro(this.endereco, this.cliente, user);
-        this.userService.create(user, cliente, role);
-        return "redirect:/administrador/listar/";
+        try {
+            this.enderecoService.cadastro(this.endereco, this.cliente, user);
+            this.userService.create(user, cliente, role);
+            return "redirect:/administrador/listar/";
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     @GetMapping("/listar/")
@@ -124,6 +133,20 @@ public class AdministradorController {
         ModelAndView mv = new ModelAndView("redirect:/administrador/listar/");
         this.userService.updateStatus(id, user);
         return mv;
+    }
+
+    @GetMapping("/detalhes/{id}")
+    public String produtoDetalhes(@PathVariable("id") Integer id, @ModelAttribute("prod") Produto produto, Model model) {
+        buscarUsuarioLogado();
+        if (usuario.getId() == null) {
+            model.addAttribute("prod", this.produtoService.listaPorUm(id));
+            model.addAttribute("role", "null");
+        } else {
+            model.addAttribute("role", usuario.getRoles().iterator().next().getName());
+            model.addAttribute("prod", produtoService.listaPorUm(id));
+        }
+
+        return "adm/detalhes";
     }
 
 
@@ -152,9 +175,16 @@ public class AdministradorController {
         return "redirect:/administrador/listar/";
     }
 
+    @Autowired
+    private RolesRepository rolesRepository;
+
     @PutMapping("/editar/{id}")
-    public String EditarRole(@PathVariable("id") Long id, User user, String role) {
-        this.userService.editRole(user, id, role);
+    public String EditarRole(@PathVariable("id") Long id, String role) {
+        User user = this.userRepository.getOne(id);
+        Role role1 = this.rolesRepository.getOne(user.getRoles().iterator().next().getId());
+        role1.setId(user.getRoles().iterator().next().getId());
+        role1.setName(role);
+        this.rolesRepository.save(role1);
         return "redirect:/administrador/listar/";
     }
 

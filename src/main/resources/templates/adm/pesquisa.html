@@ -31,7 +31,21 @@
             aria-label="Toggle navigation">
         <span style="background-color: white;" class="navbar-toggler-icon"></span>
     </button>
-    <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div id="top" class="nav-item" th:if="${role.equals('USER')}">
+        <form th:action="@{/carrinho/listar/}" th:method="GET">
+            <button type="submit" class="btn btn-outline-secondary" style="color: white;"> + <span th:text="${car}"></span>
+                <svg width="2em" height="2em" color="white" viewBox="0 0 16 16" class="bi bi-cart-check"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    <path fill-rule="evenodd"
+                          d="M11.354 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+        <div style="margin: auto;" class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
 
@@ -48,24 +62,8 @@
             <li class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a id="top" style="color: white;" class="nav-link" href="/administrador/listar/">Dados Pessoais</a>
             </li>
-            <li class="nav-item dropdown" th:if="${role.equals('USER')}">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: white;">
-                    Categorias
-                </a>
-                <div id="top" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Masculino}">Masculino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/genero?info=Feminino}">Feminino</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Vestido}">Vestidos</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Shorts}">Shorts</a>
-                    <a class="dropdown-item" th:href="@{/produtos/pesquisa?info=Blusa}">Blusas</a>
-                    <a class="dropdown-item" th:href="@{/produtos/categoria?info=Mascara}">Máscaras</a>
-                </div>
-            </li>
             <li id="top" class="nav-item" th:if="${role.equals('USER')}">
                 <a style="color: white;" class="nav-link" href="/produtos/produtos/">Produtos</a>
-            </li>
-            <li id="top" class="nav-item" th:if="${role.equals('USER')}">
-                <a style="color: white;" class="nav-link" href="/carrinho/listar/">Carrinho</a>
             </li>
             <li id="top" class="nav-item" th:if="${role.equals('ADMIN')}">
                 <a style="color: white;" class="nav-link" href="/produtos/listar/">Administrador</a>
@@ -152,6 +150,11 @@
         baguetteBox.run('.cards-gallery', {
             animation: 'slideIn'
         });
+        function desconectar() {
+            if (confirm('Deseja desconectar do sistema ?')) {
+                location.href = "/logout";
+            }
+        }
     </script>
 </body>
 

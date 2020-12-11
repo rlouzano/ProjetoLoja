@@ -15,17 +15,201 @@
     <link rel="stylesheet" th:href="@{/css/carrinho.css}">
     <link rel="stylesheet" th:href="@{/css/finalizarPedido.css}">
 </head>
-<body style="max-width: 1519px;width: 112%;">
+
+<style>
+    body {
+        background: #f9f9f9;
+    }
+
+    #wrapper {
+        padding: 90px 15px;
+    }
+
+    .navbar-expand-lg .navbar-nav.side-nav {
+        flex-direction: column;
+    }
+
+    .card {
+        margin-bottom: 15px;
+        border-radius: 0;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, .1);
+    }
+
+    .header-top {
+        box-shadow: 0 3px 5px rgba(0, 0, 0, .1)
+    }
+
+    .leftmenutrigger {
+        display: none
+    }
+
+    @media (min-width: 992px) {
+        .leftmenutrigger {
+            display: block;
+            display: block;
+            margin: 7px 20px 4px 0;
+            cursor: pointer;
+        }
+
+        #wrapper {
+            padding: 90px 15px 15px 15px;
+        }
+
+        .navbar-nav.side-nav.open {
+            left: 0;
+        }
+
+        .navbar-nav.side-nav {
+            background: #585f66;
+            box-shadow: 2px 1px 2px rgba(0, 0, 0, .1);
+            position: fixed;
+            top: 56px;
+            flex-direction: column !important;
+            left: -220px;
+            width: 200px;
+            overflow-y: auto;
+            bottom: 0;
+            overflow-x: hidden;
+            padding-bottom: 40px
+        }
+    }
+
+    .animate {
+        -webkit-transition: all .3s ease-in-out;
+        -moz-transition: all .3s ease-in-out;
+        -o-transition: all .3s ease-in-out;
+        -ms-transition: all .3s ease-in-out;
+        transition: all .3s ease-in-out
+    }
+
+    @import url(http://fonts.googleapis.com/css?family=Oswald);
+
+    body {
+        font-family: 'Oswald', sans-serif;
+    }
+
+    h2 {
+        display: inline-block;
+    }
+
+    .btn {
+        margin: 4px;
+        box-shadow: 1px 1px 5px #888888;
+    }
+
+    .btn-xs {
+        font-weight: 300;
+    }
+
+    .btn-hot {
+        color: #fff;
+        background-color: #db5566;
+        border-bottom: 2px solid #af4451;
+    }
+
+    .btn-hot:hover, .btn-sky.active:focus, .btn-hot:focus, .open > .dropdown-toggle.btn-hot {
+        color: #fff;
+        background-color: #df6a78;
+        border-bottom: 2px solid #b25560;
+        outline: none;
+    }
+
+
+    .btn-hot:active, .btn-hot.active {
+        color: #fff;
+        background-color: #c04b59;
+        border-top: 2px solid #9a3c47;
+        margin-top: 2px;
+    }
+
+    .btn-sunny {
+        color: #fff;
+        background-color: #f4ad49;
+        border-bottom: 2px solid #c38a3a;
+    }
+
+    .btn-sunny:hover, .btn-sky.active:focus, .btn-sunny:focus, .open > .dropdown-toggle.btn-sunny {
+        color: #fff;
+        background-color: #f5b75f;
+        border-bottom: 2px solid #c4924c;
+        outline: none;
+    }
+
+
+    .btn-sunny:active, .btn-sunny.active {
+        color: #fff;
+        background-color: #d69840;
+        border-top: 2px solid #ab7a33;
+        margin-top: 2px;
+    }
+
+    .btn-fresh {
+        color: #fff;
+        background-color: #51bf87;
+        border-bottom: 2px solid #41996c;
+    }
+
+    .btn-fresh:hover, .btn-sky.active:focus, .btn-fresh:focus, .open > .dropdown-toggle.btn-fresh {
+        color: #fff;
+        background-color: #66c796;
+        border-bottom: 2px solid #529f78;
+        outline: none;
+    }
+
+
+    .btn-fresh:active, .btn-fresh.active {
+        color: #fff;
+        background-color: #47a877;
+        border-top: 2px solid #39865f;
+        outline: none;
+        outline-offset: none;
+        margin-top: 2px;
+    }
+
+    .btn-sky {
+        color: #fff;
+        background-color: #0bacd3;
+        border-bottom: 2px solid #098aa9;
+    }
+
+    .btn-sky:hover, .btn-sky.active:focus, .btn-sky:focus, .open > .dropdown-toggle.btn-sky {
+        color: #fff;
+        background-color: #29b6d8;
+        border-bottom: 2px solid #2192ad;
+        outline: none;
+    }
+
+    .btn-sky:active, .btn-sky.active {
+        color: #fff;
+        background-color: #0a97b9;
+        border-top: 2px solid #087994;
+        outline-offset: none;
+        margin-top: 2px;
+    }
+
+    .btn:focus,
+    .btn:active:focus,
+    .btn.active:focus {
+        outline: none;
+        outline-offset: 0px;
+    }
+
+    a {
+        color: #fff;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+
+
+    }
+</style>
+<body>
 
 <!-- MENU DE NAVEGAÇÃO -->
 <nav class="navbar navbar-expand-lg sticky-top bg-dark navbar-light bg-light">
-    <form th:action="@{/produtos/categoria}" th:method="GET" class="form-inline">
-        <div>
-            <input class="form-control mr-sm-2" type="search" name="info" var="${param.pesquisa}" placeholder="Search"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </div>
-    </form>
     <a id="top" style="margin-left: 15px; font-size: 20pt; color: white; font-family: 'Righteous', cursive;"
        class="navbar-brand" href="#">Loja Jokers</a>
     <button style="background-color: white;" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -50,67 +234,77 @@
     </div>
 </nav>
 <!-- MENU DE NAVEGAÇÃO -->
-<div class="container" style="max-width: 1158px;max-height: 1300px;width: 1098px;">
-    <div class="form-control" style="width: 1099px;height: 56px;text-align: center;">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <a class="btn btn-secondary"
-               href="/pedidos/status_pedido?status=Aguardando+Pagamento">Aguardando Pagamento</a>
-            <a class="btn btn-secondary"
-               href="/pedidos/status_pedido?status=Pagamento+Rejeitado">Pagamento Rejeitado</a>
-            <a class="btn btn-secondary"
-               href="/pedidos/status_pedido?status=Pagamento+com+sucesso">Pagamento com sucesso</a>
-            <a class="btn btn-secondary"
-               href="/pedidos/status_pedido?status=Aguardando+Retirada">Aguardando Retirada</a>
-            <a class="btn btn-secondary" href="/pedidos/status_pedido?status=Em+transito">Em
-                transito</a>
-            <a class="btn btn-secondary"
-               href="/pedidos/status_pedido?status=Entregue">Entregue</a>
+
+<div class="well text-center" style="margin-top: 35px;">
+    <button type="button" class="btn btn-hot text-uppercase btn-sm"><a
+            href="/pedidos/status_pedido?status=Aguardando+Pagamento">Aguardando Pagamento</a></button>
+    <button type="button" class="btn btn-sunny text-uppercase btn-sm"><a
+            href="/pedidos/status_pedido?status=Pagamento+Rejeitado">Pagamento Rejeitado</a></button>
+    <button type="button" class="btn btn-fresh text-uppercase btn-sm"><a
+            href="/pedidos/status_pedido?status=Pagamento+com+sucesso">Pagamento com sucesso</a></button>
+    <button type="button" class="btn btn-sky text-uppercase btn-sm"><a
+            href="/pedidos/status_pedido?status=Aguardando+Retirada">Aguardando Retirada</a></button>
+    <button type="button" class="btn btn-sky text-uppercase btn-sm"><a href="/pedidos/status_pedido?status=Em+transito">Em
+        transito</a></button>
+    <button type="button" class="btn btn-sky text-uppercase btn-sm"><a href="/pedidos/status_pedido?status=Entregue">Entregue</a>
+    </button>
+</div>
+
+<div class="container" style="margin-top: -44px;">
+    <div class="row">
+        <div class="col-md-9 col-lg-4" th:each="c : ${v}">
+            <div class="card" >
+                <div class="card-body">
+                    <div style="padding: 12px;background-color: beige; margin-top: 12px;">
+                        <h3 style="text-align: center;"><strong style="text-align: center;"
+                                                                th:text="${c.status}"></strong></h3>
+                    </div>
+                    <label style="width: 305px;text-align: center;">Quantidade:
+                        <p class="card-text" th:text="${c.quantidade}"></p>
+                    </label>
+                    <div style="width: 305px;text-align: center;">
+                        <label>Valor:
+                            <p class="card-link" th:text="${#numbers.formatCurrency(c.valor)}"></p>
+                        </label>
+                        <label>Frete:
+                            <p class="card-link" th:text="${#numbers.formatCurrency(c.frete)}"></p>
+                        </label>
+                        <label>Total:
+                            <p class="card-link"
+                               th:text="${#numbers.formatCurrency((c.valor*c.quantidade)+c.frete)}"></p>
+                        </label>
+                    </div>
+                    <label style="width: 305px;text-align: center;">Endereço:
+                        <p class="card-link" th:text="${c.logradouro + ', ' +  c.numero}"></p>
+                    </label>
+                    <label style="width: 305px;text-align: center;">Tipo Pagto:
+                        <p class="card-link" th:text="${c.bandeira}"></p>
+                    </label>
+                    <label style="width: 305px;text-align: center;">Numero Pedido:
+                        <p class="card-link" style="color: blue;" th:text="${c.codigo_pedido}"></p>
+                    </label>
+                    <div style="text-align: center;">
+                        <form th:action="@{/pedidos/editar_status/{id}(id = ${c.id})}" th:method="POST">
+                            <input type="hidden" name="_method" value="PUT"/>
+                            <select class="form-select form-select-lg mb-3 col-9" th:name="codigo_pedido">
+                                <option>Aguardando Pagamento</option>
+                                <option>Pagamento Rejeitado</option>
+                                <option>Pagamento com sucesso</option>
+                                <option>Aguardando Retirada</option>
+                                <option>Em transito</option>
+                                <option>Entregue</option>
+                            </select>
+                            <div>
+                                <button type="submit" class="btn btn-primary col-6">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <table class="table" style="margin-left: 5px;">
-        <thead class="thead-dark" style="font-size: 10px;">
-        <tr>
-            <th style="text-align: center">IMG</th>
-            <th style="text-align: center">QTD</th>
-            <th style="text-align: center">VALOR UNITÁRIO</th>
-            <th style="text-align: center">FRETE</th>
-            <th style="text-align: center">TOTAL A PAGAR</th>
-            <th style="text-align: center">ENDEREÇO</th>
-            <th style="text-align: center">FORMA DE PAGAMENTO</th>
-            <th style="text-align: center">CODIGO PEDIDO</th>
-            <th style="text-align: center">SELECIONAR</th>
-            <th style="text-align: center">STATUS</th>
-        </tr>
-        </thead>
-        <tbody style="font-size: 10px;">
-        <tr th:each="c : ${v}" style="text-align: center;">
-            <td><img style="width: 40px;" th:src="${c.img}"></td>
-            <td style="text-align: center" th:text="${c.quantidade}"></td>
-            <td th:text="${#numbers.formatCurrency(c.valor)}"></td>
-            <td style="text-align: center" th:text="${#numbers.formatCurrency(c.frete)}"></td>
-            <td style="text-align: center" th:text="${#numbers.formatCurrency((c.valor*c.quantidade)+c.frete)}"></td>
-            <td style="text-align: center" th:text="${c.logradouro + ', ' +  c.numero}"></td>
-            <td style="text-align: center" th:text="${c.bandeira}"></td>
-            <td style="text-align: center" th:text="${c.codigo_pedido}"></td>
-            <td style="text-align: center; width: 260px;">
-                <form th:action="@{/pedidos/editar_status/{id}(id = ${c.id})}" th:method="POST">
-                    <input type="hidden" name="_method" value="PUT"/>
-                    <select th:name="codigo_pedido" style="margin-left: 103px;">
-                        <option>Aguardando Pagamento</option>
-                        <option>Pagamento Rejeitado</option>
-                        <option>Pagamento com sucesso</option>
-                        <option>Aguardando Retirada</option>
-                        <option>Em transito</option>
-                        <option>Entregue</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary" style="margin-top: -24px;margin-left: -119px;border-radius: 11px;">Editar</button>
-                </form>
-            </td>
-            <td style="text-align: center" th:text="${c.status}"></td>
-        </tr>
-        </tbody>
-    </table>
 </div>
+
 
 <footer style="margin-top: 50px;" class="bg-dark text-white">
     <div class="container py-4">
